@@ -1,0 +1,12 @@
+{
+  "DockerImages$": [
+    {
+      "DockerImageName": "arshucs/edgeapp:latest",
+      "IsDefault": true
+    }
+  ],
+  "DockerImagesSchema": {
+    "DockerImageName": "ImageName",
+    "IsDefault": false
+  }
+}

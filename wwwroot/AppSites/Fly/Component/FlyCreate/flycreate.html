@@ -1,0 +1,234 @@
+<script>
+
+    function flyLaunchAppName(responseElmId, appName) {
+
+        var responseElm = getElm(responseElmId);
+        if (appName.length > 0) {
+            var host = appName + ".fly.dev";
+            window.open("https://" + host, "_blank");
+        }
+        else {
+            showText(responseElm, "App Name cannot empty", 'red');
+        }
+    }
+
+    function flyDeployApp(progressElmId, responseElmId, orgSlugVal, appNameVal, regionVal, dockerImageVal, machineConfigVal, actionElmId, successCallback) {
+
+        var id = window.ajaxid++;
+        var responseElm = getElm(responseElmId);
+        responseElm.textContent = '';
+        var responseContainerElmId = responseElmId + "Container";
+        hideElm(responseContainerElmId);
+        var valid = true;
+
+        getElm(actionElmId).setAttribute('disabled', true);
+       
+        if (valid == true) {
+            if (appNameVal.trim().length === 0) {
+                showText(responseElm, 'Enter Unique App Name', 'red');
+                showElm(responseContainerElmId);
+                valid = false;
+            }
+        }
+
+        if (valid === true) {
+
+            let url = '/AppApi/FlyApi';
+            let urlMethod = 'POST';
+            let urlContent = {
+                "jsonrpc": '2.0', "method": 'DeployApp', "params": {
+                    "fly_api_token": '',
+                    "org_slug": orgSlugVal,
+                    "app_name": appNameVal,
+                    "region": regionVal,
+                    "dockerImage": dockerImageVal,
+                    "machineConfig": machineConfigVal
+                }, "id": id
+            };
+
+            dopost(progressElmId, responseElmId, url, urlContent,
+                function (data) {
+                    if (data.hasOwnProperty('Result') === true) {
+                        var result = data.Result;
+
+                        if (result.hasOwnProperty('error') === true) {
+                            showText(responseElm, result.error, 'red');
+                            showElm(responseContainerElmId);
+
+                            getElm(actionElmId).removeAttribute('disabled');
+                        }
+                        else if (result.hasOwnProperty('message') === true) {
+                            showText(responseElm, result.message, 'green');
+                            showElm(responseContainerElmId);  
+                            triggerEvent('flyAppRefreshBtn', 'click');
+                        }
+                    }
+                    else if ((data.hasOwnProperty('Error') === true) && (data.Error)) {
+                        var error = data.Error;
+                        if (error.hasOwnProperty('Message') === true) {
+                            showText(responseElm, error.Message, 'red');
+                            showElm(responseContainerElmId);
+                        }
+
+                        getElm(actionElmId).removeAttribute('disabled');
+                    }
+                },
+                function (data) {
+                    if ((data.hasOwnProperty('Error') === true) && (data.Error)) {
+                        var result = data.Error;
+                        if (result.hasOwnProperty('Message') === true) {
+                            showText(responseElm, result.Message, 'red');
+                            showElm(responseContainerElmId);
+                        }
+                    }
+                    else if (data.hasOwnProperty('Result') === true) {
+                        var result = data.Result;
+                        if (result.hasOwnProperty('error') === true) {
+                            showText(responseElm, result.error, 'red');
+                            showElm(responseContainerElmId);
+                        }
+                    }
+                    getElm(actionElmId).removeAttribute('disabled');
+                });
+        }
+
+        return false;
+    }
+
+    function flyDeleteAllApp(progressElmId, responseElmId, orgSlugVal, actionElmId, successCallback) {
+
+        var id = window.ajaxid++;
+        var responseElm = getElm(responseElmId);
+        responseElm.textContent = '';
+        var responseContainerElmId = responseElmId + "Container";
+        hideElm(responseContainerElmId);
+        var valid = true;
+
+        getElm(actionElmId).setAttribute('disabled', true);
+
+        if (valid === true) {
+
+            let url = '/AppApi/FlyApi';
+            let urlMethod = 'POST';
+            let urlContent = {
+                "jsonrpc": '2.0', "method": 'DeleteAllApps', "params": {
+                    "fly_api_token": '',
+                    "org_slug": orgSlugVal,
+                }, "id": id
+            };
+
+            dopost(progressElmId, responseElmId, url, urlContent,
+                function (data) {
+                    if (data.hasOwnProperty('Result') === true) {
+                        var result = data.Result;
+
+                        if (result.hasOwnProperty('error') === true) {
+                            showText(responseElm, result.error, 'red');
+                            showElm(responseContainerElmId);
+
+                            getElm(actionElmId).removeAttribute('disabled');
+                        }
+                        else if (result.hasOwnProperty('message') === true) {
+                            showText(responseElm, result.message, 'green');
+                            showElm(responseContainerElmId);
+                        }
+                    }
+                    else if ((data.hasOwnProperty('Error') === true) && (data.Error)) {
+                        var error = data.Error;
+                        if (error.hasOwnProperty('Message') === true) {
+                            showText(responseElm, error.Message, 'red');
+                            showElm(responseContainerElmId);
+                        }
+                        getElm(actionElmId).removeAttribute('disabled');
+                    }
+                },
+                function (data) {
+                    if ((data.hasOwnProperty('Error') === true) && (data.Error)) {
+                        var result = data.Error;
+                        if (result.hasOwnProperty('Message') === true) {
+                            showText(responseElm, result.Message, 'red');
+                            showElm(responseContainerElmId);
+                        }
+                    }
+                    else if (data.hasOwnProperty('Result') === true) {
+                        var result = data.Result;
+                        if (result.hasOwnProperty('error') === true) {
+                            showText(responseElm, result.error, 'red');
+                            showElm(responseContainerElmId);
+                        }
+                    }
+                    getElm(actionElmId).removeAttribute('disabled');
+                });
+        }
+
+        return false;
+    }
+
+</script>
+
+<div>
+
+    <div class="notification is-marginless" id="flyResponseContainer" style="display:none;">
+        <button class="delete" onclick="hideElm('flyResponseContainer');"></button>
+        <div id="flyResponse"></div>
+    </div>
+
+    <label style="width:100%;margin: 5px auto;">Deploy Edge Apps to any Edge Region</label>
+    <div class="flex-content-wrap">
+        <div class="flex-item-stretch border-left" style="height: 40px;">
+            <input style="width:100%;border:none;border-right:dashed;" id="flyAppName" type="text" placeholder="App Name" maxlength="15" />
+        </div>
+        <button style="height:40px; width: 40px; text-align:center;" class="border-top-bottom" id="openAppBtn" onclick="flyLaunchAppName('flyResponse', getElm('flyAppName').value)">
+            <svg xmlns="http://www.w3.org/2000/svg" style="width:40px;height:40px;" viewBox="0 0 20 20" fill="currentColor">
+                <path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z" />
+                <path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z" />
+            </svg>
+        </button>
+        <div class="flex-item-stretch border-right" style="height: 40px;">
+            <select id="flyRegions" style="width:100%;border:none;margin: 0 0 0 5px;">
+                {{@FlyRegions}}
+                <option style="padding: 0px 0px 5px 0px;" {{@IsDefault}} selected="selected" {{/IsDefault}} value="{{$RegionCode}}">{{$RegionName}}</option>
+                {{/FlyRegions}}
+            </select>
+        </div>
+    </div>
+
+    <div class="flex-content-wrap" style="display:none;">
+        <div class="flex-item-stretch border-left" style="height: 40px;">
+            <select id="flyOrgSlug" style="width: 100%; border: none; padding: 0 0 0 5px;" onchange="flyResetAppList();flyResetMachineList();">
+                {{@FlyOrgs}}
+                <option {{@IsDefault}} selected="selected" {{/IsDefault}} value="{{$FlyOrgSlug}}">{{$FlyOrgName}}</option>
+                {{/FlyOrgs}}
+            </select>
+        </div>
+        <div class="flex-item-stretch border-right" style="height: 40px;">
+            <select id="flyMachineCreateConfigs" style="width: 100%; border: none; padding: 0 0 0 5px">
+                {{@MachineCreateConfigs}}
+                <option value="{{$ConfigPath}}">{{$ConfigName}}</option>
+                {{/MachineCreateConfigs}}
+            </select>
+        </div>
+    </div>
+    <div class="flex-content-wrap">
+        <div class="flex-item-stretch border-left" style="height: 40px;">
+            <select id="dockerImages" style="width: 100%; border: none; padding: 0 0 0 5px;">
+                {{@DockerImages}}
+                <option {{@IsDefault}} selected="selected" {{/IsDefault}}>{{$DockerImageName}}</option>
+                {{/DockerImages}}
+            </select>
+        </div>
+        <button class="border-right createbtn btn px-3 pt-1" style="width:80px;height:40px;" id="createAppBtn"
+                onclick="flyDeployApp('flyDeployAppProgress', 'flyResponse', getElm('flyOrgSlug').value, getElm('flyAppName').value, getElm('flyRegions').value, getElm('dockerImages').value, getElm('flyMachineCreateConfigs').value,'createAppBtn')">
+            Deploy<div id="flyDeployAppProgress"></div>
+        </button>
+    </div>
+
+    <label style="width:100%;margin: 5px auto;font-size:xx-small;color:red;">All 15 Min Old App's will be deleted</label>
+    <div class="flex-content-wrap">
+        <button class="border-right createbtn btn px-3 pt-1" style="width:150px;height:40px;" id="deleteAllAppBtn"
+                onclick="flyDeleteAllApp('flyDeleteAllAppProgress', 'flyResponse', getElm('flyOrgSlug').value, 'deleteAllAppBtn')">
+            Delete Apps<div id="flyDeleteAllAppProgress"></div>
+        </button>
+    </div>
+
+</div>

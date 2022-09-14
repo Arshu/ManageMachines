@@ -1,0 +1,115 @@
+{
+  "DefaultFlyRegion": "sin",
+  "FlyRegions": [
+    {
+      "RegionCode": "ams",
+      "RegionName": "Amsterdam, Netherlands",
+      "IsDefault": false
+    },
+    {
+      "RegionCode": "cdg",
+      "RegionName": "Paris, France",
+      "IsDefault": false
+    },
+    {
+      "RegionCode": "dfw",
+      "RegionName": "Dallas, Texas (US)",
+      "IsDefault": false
+    },
+    {
+      "RegionCode": "ewr",
+      "RegionName": "Secaucus, NJ (US)",
+      "IsDefault": false
+    },
+    {
+      "RegionCode": "fra",
+      "RegionName": "Frankfurt, Germany",
+      "IsDefault": false
+    },
+    {
+      "RegionCode": "gru",
+      "RegionName": "São Paulo",
+      "IsDefault": false
+    },
+    {
+      "RegionCode": "hkg",
+      "RegionName": "Hong Kong, Hong Kong",
+      "IsDefault": false
+    },
+    {
+      "RegionCode": "iad",
+      "RegionName": "Ashburn, Virginia (US)",
+      "IsDefault": false
+    },
+    {
+      "RegionCode": "lax",
+      "RegionName": "Los Angeles, California (US)",
+      "IsDefault": false
+    },
+    {
+      "RegionCode": "lhr",
+      "RegionName": "London, United Kingdom",
+      "IsDefault": false
+    },
+    {
+      "RegionCode": "maa",
+      "RegionName": "Chennai (Madras), India",
+      "IsDefault": false
+    },
+    {
+      "RegionCode": "mad",
+      "RegionName": "Madrid, Spain",
+      "IsDefault": false
+    },
+    {
+      "RegionCode": "mia",
+      "RegionName": "Miami, Florida (US)",
+      "IsDefault": false
+    },
+    {
+      "RegionCode": "nrt",
+      "RegionName": "Tokyo, Japan",
+      "IsDefault": false
+    },
+    {
+      "RegionCode": "ord",
+      "RegionName": "Chicago, Illinois (US)",
+      "IsDefault": false
+    },
+    {
+      "RegionCode": "scl",
+      "RegionName": "Santiago, Chile",
+      "IsDefault": false
+    },
+    {
+      "RegionCode": "sea",
+      "RegionName": "Seattle, Washington (US)",
+      "IsDefault": false
+    },
+    {
+      "RegionCode": "sin",
+      "RegionName": "Singapore",
+      "IsDefault": true
+    },
+    {
+      "RegionCode": "sjc",
+      "RegionName": "Sunnyvale, California (US)",
+      "IsDefault": false
+    },
+    {
+      "RegionCode": "syd",
+      "RegionName": "Sydney, Australia",
+      "IsDefault": false
+    },
+    {
+      "RegionCode": "yul",
+      "RegionName": "Montreal, Canada",
+      "IsDefault": false
+    },
+    {
+      "RegionCode": "yyz",
+      "RegionName": "Toronto, Canada",
+      "IsDefault": false
+    }
+  ]
+}

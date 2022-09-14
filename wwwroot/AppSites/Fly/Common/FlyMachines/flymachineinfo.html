@@ -1,0 +1,41 @@
+<script>
+    function selectAllItem() {
+
+        var isChecked = getElm('selectAll').checked;
+        if (isChecked === true) {
+            getElms(".machineSelectBox").forEach(function (elm) {
+                if (elm.disabled == false) {
+                    elm.checked = true;
+                }
+            });
+        } else {
+            getElms(".machineSelectBox").forEach(function (elm) {
+                elm.checked = false;
+            });
+        }
+    }
+
+</script>
+<div id="flyMachineListProgress"></div>
+
+<div class="notification" id="flyMachineListResponseContainer" style="margin:5px; padding:10px;text-align:justify;display:none;">
+    <button class="delete" onclick="hideElm('flyMachineListResponseContainer')"></button>
+    <div id="flyMachineListResponse"></div>
+</div>
+
+<div style="{{$FlyMachineListStyle}}" id="flyMachineList">
+    {{
+        VIEW_FlyMachineList("FlyMachineList",
+            "htmlTableEmpty":"FlyMachineListEmpty",
+            "htmlTable":"FlyMachineListTable",
+            "htmlTableBody":"FlyMachineListTableBody",
+            "htmlTableRow":"FlyMachineListTableRow",
+            "htmlTableHeader":"FlyMachineListTableHeader",
+            "htmlTableFooter":"FlyMachineListTableFooter",
+            "filterKey" :"",
+            "filterValue":"",
+            "pageNo": "1",
+            "itemsPerPage":"10"
+        )
+    }}
+</div>

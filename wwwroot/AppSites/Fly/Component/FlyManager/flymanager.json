@@ -1,0 +1,35 @@
+{
+  "FlyAuthToken$": "*",
+  "CreateDockerImages": [
+    {
+      "DockerImageName": "arshucs/edgeapp:latest",
+      "IsDefault": true
+    },
+    {
+      "DockerImageName": "registry.fly.io/edgeadmin:latest",
+      "IsDefault": false
+    }
+  ],
+  "MachineCreateConfigs": [
+    {
+      "ConfigName": "Basic Create Json",
+      "ConfigPath": "basic_create"
+    }
+  ],
+  "UpdateDockerImages": [
+    {
+      "DockerImageName": "arshucs/edgeapp:latest",
+      "IsDefault": true
+    },
+    {
+      "DockerImageName": "registry.fly.io/edgeadmin:latest",
+      "IsDefault": false
+    }
+  ],
+  "MachineUpdateConfigs": [
+    {
+      "ConfigName": "Basic Update Json",
+      "ConfigPath": "basic_update"
+    }
+  ]
+}

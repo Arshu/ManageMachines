@@ -1,0 +1,13 @@
+
+<div class="flex-content-wrap">
+    <label style="width:100%;margin: 5px auto;">Fly VM Memory</label>
+    <div class="flex-item-stretch border" style="height: 40px;">
+        <select id="flyVMMemory" style="width: 100%; border: none; padding: 0 0 0 5px;">
+            {{@FlyVMMemory}}
+            {{@IsVisible}}
+            <option {{@IsDefault}} selected="selected" {{/IsDefault}}>{{$FlyVMMemory}}</option>
+            {{/IsVisible}}
+            {{/FlyVMMemory}}
+        </select>
+    </div>
+</div>

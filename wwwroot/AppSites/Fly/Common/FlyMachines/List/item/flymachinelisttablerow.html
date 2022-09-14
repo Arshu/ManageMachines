@@ -1,0 +1,20 @@
+
+<tr style="text-align: center;">
+    <td title="{{$region}}">
+        <label class="checkbox">
+            <input type="checkbox" class="machineSelectBox" name="select{{$id}}" value="{{$id}}" state="{{$state}}" onchange="setMachineAction()">
+        </label>
+        {{$name}}
+    </td>
+    <td>
+        <a href="https://{{$app_name}}.fly.dev" target="_blank">{{$config_image}}</a>
+    </td>    
+</tr>
+<tr style="text-align: center;">  
+    <td>
+        {{$state}}
+    </td>
+    <td>
+        {{$config_size}}
+    </td>
+</tr>

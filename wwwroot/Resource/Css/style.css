@@ -1,0 +1,56 @@
+﻿/* all section */
+html {
+    scroll-behavior: smooth;
+}
+
+h2.name {
+    font-family: "Yeseva One", cursive;
+}
+
+/* navbar section */
+nav.navbar {
+    background-image: url("/Content/Images/navBg.png");
+    background-size: 400px;
+    background-color: transparent;
+    background-repeat: no-repeat;
+    background-position: -200px -220px;
+}
+
+    nav.navbar a {
+        margin: 0 10px;
+        font-weight: 600;
+    }
+
+nav .navbar-toggler:focus {
+    outline: none;
+}
+
+.createbtn {
+    background: linear-gradient(to right, #1cd9b8, #06aced);
+    color: white;
+}
+
+.curv {
+    background: linear-gradient(to right, #1cd9b8, #06aced);
+    color: white;
+    border-radius: 23px 0 23px 0;
+    transition: 0.3s ease;
+}
+
+    .curv:hover {
+        color: white;
+        transform: scale(1.08);
+    }
+
+/* header section */
+
+
+    header .text {
+        padding-left: 100px;
+    }
+
+    header .title {
+        font-family: "Yeseva One", cursive;
+        font-size: 5vw;
+        line-height: 0.9;
+    }

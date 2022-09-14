@@ -1,0 +1,161 @@
+<script>
+
+    var gManageFlyAppResponseElmId = "flyAppMachineListResponse";
+    var gManageFlyAppTargetElmId = "flyAppMachineList";
+    var gManageFlyAppCurrentPage = 1;
+    var gManageFlyAppDefaultItemsPerPage = 10;
+
+    function fillFlyAppMachineList(progressElmId, responseElmId, flyApiTokenVal, orgSlugVal, appNameVal, targetElmId, pageNo, skipValidation, successCallback) {
+        var id = window.ajaxid++;
+        var responseElm = getElm(responseElmId);
+        var responseContainerElmId = responseElmId + "Container";
+        //responseElm.textContent = '';
+        //hideElm(responseContainerElmId);
+
+        var valid = true;
+
+        var htmlTable = "FlyAppListTable";
+        var htmlTableBody = "FlyAppListTableBody";
+        var htmlTableEmpty = "FlyAppListEmpty";
+        var htmlTableRow = "FlyAppListTableRow";
+        var htmlTableHeader = "FlyAppListTableHeader";
+        var htmlTableFooter = "FlyAppListTableFooter";
+
+        gManageFlyAppCurrentPage = pageNo;
+        var itemsPerPage = gManageFlyAppDefaultItemsPerPage;
+        if (haveElm("flyAppListItemsPerPage") == true) {
+            itemsPerPage = getElm("flyAppListItemsPerPage").value;
+        }
+
+        if (skipValidation == false) {
+
+            if (valid == true) {
+                if (orgSlugVal.trim().length === 0) {
+                    showText(responseElm, 'Select Org Slug', 'red');
+                    valid = false;
+                }
+            }
+
+            if (valid == true) {
+                if (appNameVal.trim().length === 0) {
+                    showText(responseElm, 'Select App Name', 'red');
+                    valid = false;
+                }
+            }
+        }
+
+        if (targetElmId.trim().length === 0) {
+            showText(responseElm, 'Enter Target Element Id', 'red');
+            valid = false;
+        }
+
+        if (valid === true) {
+
+            let url = '/AppApi/FlyApi';
+            let urlContent = {
+                "jsonrpc": '2.0', "method": 'GetFlyAppMachineListView', "params": {
+                    "appSite": '{{$AppSite}}',
+                    "appView": "{{$AppView}}",
+                    "htmlTableEmpty": htmlTableEmpty,
+                    "htmlTable": htmlTable,
+                    "htmlTableBody": htmlTableBody,
+                    "htmlTableRow": htmlTableRow,
+                    "htmlTableHeader": htmlTableHeader,
+                    "htmlTableFooter": htmlTableFooter,
+                    "pageNo": pageNo,
+                    "itemsPerPage": itemsPerPage,
+                    "fly_api_token": flyApiTokenVal,
+                    "org_slug": orgSlugVal,
+                    "app_name": appNameVal
+                }, "id": id
+            };
+
+            dopost(progressElmId, responseElmId, url, urlContent,
+                function (data) {
+                    if ((data.hasOwnProperty('Result') === true) && (data.Result)) {
+                        var result = data.Result;
+                        if (result.hasOwnProperty('html') === true) {
+                            var rootNode = getElm(targetElmId);
+                            rootNode.innerHTML = result.html;
+                            showElm(targetElmId);
+
+                            if (typeof successCallback === "function") {
+                                successCallback();
+                            }
+                        }
+                        if (result.hasOwnProperty('error') === true) {
+                            showText(responseElm, result.error, 'red');
+                        }
+                        //else if (result.hasOwnProperty('message') === true) {
+                        //    showText(responseElm, result.message, 'green');
+                        //}
+                    }
+                    else if ((data.hasOwnProperty('Error') === true) && (data.Error)) {
+                        var error = data.Error;
+                        if (error.hasOwnProperty('Message') === true) {
+                            showText(responseElm, error.Message, 'red');
+                        }
+                    }
+                },
+                function (data) {
+                    if ((data.hasOwnProperty('Error') === true) && (data.Error)) {
+                        var result = data.Error;
+                        if (result.hasOwnProperty('Message') === true) {
+                            showText(responseElm, result.Message, 'red');
+                        }
+                    }
+                    else if (data.hasOwnProperty('Result') === true) {
+                        var result = data.Result;
+                        if (result.hasOwnProperty('error') === true) {
+                            showText(responseElm, result.error, 'red');
+                        }
+                    }
+                });
+        }
+
+        return false;
+    }
+
+    function refreshFlyAppMachineList(progressElmId, currentPageNo, skipValidation) {
+
+        var valid = true;
+        if (progressElmId) { valid = true; } else { valid = false; }
+        if (currentPageNo) { valid = true; } else { valid = false; }
+
+        if (!skipValidation) skipValidation = true;
+
+        if (valid === true) {
+            var flyApiToken = "";
+            var orgSlug = "{{$FlyOrgName}}";
+            var appName = "";
+
+            fillFlyAppMachineList(progressElmId, gManageFlyAppResponseElmId, flyApiToken, orgSlug, appName, gManageFlyAppTargetElmId, currentPageNo, skipValidation, function () {
+
+            });
+        }
+    }
+
+</script>
+<div id="flyAppListProgress"></div>
+
+<div class="notification" id="flyAppMachineListResponseContainer" style="margin:5px; padding:10px;text-align:justify;display:none;">
+    <button class="delete" onclick="hideElm('flyAppMachineListResponseContainer')"></button>
+    <div id="flyAppMachineListResponse"></div>
+</div>
+
+<div style="{{$FlyAppListStyle}}" id="flyAppMachineList">
+    {{
+        VIEW_FlyAppMachineList("FlyAppMachineList",
+            "htmlTableEmpty":"FlyAppListEmpty",
+            "htmlTable":"FlyAppListTable",
+            "htmlTableBody":"FlyAppListTableBody",
+            "htmlTableRow":"FlyAppListTableRow",
+            "htmlTableHeader":"FlyAppListTableHeader",
+            "htmlTableFooter":"FlyAppListTableFooter",
+            "filterKey" :"",
+            "filterValue":"",
+            "pageNo": "1",
+            "itemsPerPage":"10"
+        )
+    }}
+</div>

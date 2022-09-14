@@ -1,0 +1,11 @@
+{
+  "FlyAppUrlSuffix$": ".fly.dev",
+  "FlyAppName$": "",
+  "FlyApps": [
+
+  ],
+  "FlyAppsSchema": {
+    "FlyAppName": "AppName",
+    "IsDefault": false
+  }
+}

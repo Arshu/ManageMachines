@@ -1,0 +1,29 @@
+<div style="margin:5px 10px;">
+
+    <div class="notification is-marginless" id="flyResponseContainer" style="display:none;">
+        <button class="delete" onclick="hideElm('flyResponseContainer');"></button>
+        <div id="flyResponse"></div>
+    </div>
+
+    <div class="flex-content-wrap" style="margin: 5px 0px;">
+        <label style="color:red;font-size:x-small">Prerequisite for localhost running: Commandline accessible flyctl installed in the portable app execution environment and <a href="https://fly.io/docs/reference/machines/">wireguard vpn configured as per fly docs</a></label>
+    </div>
+
+    {{FlyUserManage}}
+
+    {{FlyOrgs}}
+
+    <div class="notification is-marginless" id="flyAppResponseContainer" style="display:none;">
+        <button class="delete" onclick="hideElm('flyAppResponseContainer');"></button>
+        <div id="flyAppResponse"></div>
+    </div>
+
+    {{FlyAppManage}}
+
+    {{FlyApps}}
+
+    {{FlyMachineManage}}
+
+    {{FlyImageManage}}
+
+</div>

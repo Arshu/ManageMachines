@@ -1,0 +1,1068 @@
+
+<script>
+
+    var gManageFlyMachineResponseElmId = "flyMachineListResponse";
+    var gManageFlyMachineTargetElmId = "flyMachineList";
+    var gManageFlyMachineCurrentPage = 1;
+    var gManageFlyMachineDefaultItemsPerPage = 10;
+
+    function fillFlyMachineList(progressElmId, responseElmId, flyApiTokenVal, appNameVal, targetElmId, pageNo, skipValidation, successCallback) {
+        var id = window.ajaxid++;
+        var responseElm = getElm(responseElmId);
+        var responseContainerElmId = responseElmId + "Container";
+        //responseElm.textContent = '';
+        //hideElm(responseContainerElmId);
+
+        var valid = true;
+
+        var htmlTableEmpty = "FlyMachineListEmpty";
+        var htmlTable = "FlyMachineListTable";
+        var htmlTableBody = "FlyMachineListTableBody";
+        var htmlTableRow = "FlyMachineListTableRow";
+        var htmlTableHeader = "FlyMachineListTableHeader";
+        var htmlTableFooter = "FlyMachineListTableFooter";
+
+        gManageFlyMachineCurrentPage = pageNo;
+        var itemsPerPage = gManageFlyMachineDefaultItemsPerPage;
+        if (haveElm("flyMachineListItemsPerPage") == true) {
+            itemsPerPage = getElm("flyMachineListItemsPerPage").value;
+        }
+
+        if (skipValidation == false) {
+            if (appNameVal.trim().length === 0) {
+                showText(responseElm, 'Select App Name', 'red');
+                valid = false;
+            }
+        }
+
+        if (targetElmId.trim().length === 0) {
+            showText(responseElm, 'Enter Target Element Id', 'red');
+            valid = false;
+        }
+
+        if (valid === true) {
+
+            let url = '/AppApi/FlyApi';
+            let urlContent = {
+                "jsonrpc": '2.0', "method": 'GetFlyMachineListView', "params": {
+                    "appSite": '{{$AppSite}}',
+                    "appView": "{{$AppView}}",
+                    "htmlTableEmpty": htmlTableEmpty,
+                    "htmlTable": htmlTable,
+                    "htmlTableBody": htmlTableBody,
+                    "htmlTableRow": htmlTableRow,
+                    "htmlTableHeader": htmlTableHeader,
+                    "htmlTableFooter": htmlTableFooter,
+                    "pageNo": pageNo,
+                    "itemsPerPage": itemsPerPage,
+                    "fly_api_token": flyApiTokenVal,
+                    "app_name": appNameVal
+                }, "id": id
+            };
+
+            dopost(progressElmId, responseElmId, url, urlContent,
+                function (data) {
+                    if ((data.hasOwnProperty('Result') === true) && (data.Result)) {
+                        var result = data.Result;
+                        if (result.hasOwnProperty('html') === true) {
+                            var rootNode = getElm(targetElmId);
+                            rootNode.innerHTML = result.html;
+                            showElm(targetElmId);
+
+                            if (typeof successCallback === "function") {
+                                successCallback();
+                            }
+                        }
+                        if (result.hasOwnProperty('error') === true) {
+                            showText(responseElm, result.error, 'red');
+                        }
+                        //else if (result.hasOwnProperty('message') === true) {
+                        //    showText(responseElm, result.message, 'green');
+                        //}
+                    }
+                    else if ((data.hasOwnProperty('Error') === true) && (data.Error)) {
+                        var error = data.Error;
+                        if (error.hasOwnProperty('Message') === true) {
+                            showText(responseElm, error.Message, 'red');
+                        }
+                    }
+                },
+                function (data) {
+                    if ((data.hasOwnProperty('Error') === true) && (data.Error)) {
+                        var result = data.Error;
+                        if (result.hasOwnProperty('Message') === true) {
+                            showText(responseElm, result.Message, 'red');
+                        }
+                    }
+                    else if (data.hasOwnProperty('Result') === true) {
+                        var result = data.Result;
+                        if (result.hasOwnProperty('error') === true) {
+                            showText(responseElm, result.error, 'red');
+                        }
+                    }
+                });
+        }
+
+        return false;
+    }
+
+    function refreshFlyMachineList(progressElmId, currentPageNo, skipValidation) {
+
+        var valid = true;
+        if (progressElmId) { valid = true; } else { valid = false; }
+        if (currentPageNo) { valid = true; } else { valid = false; }
+
+        hideElm('manageFlyMachines'); showElm('flyMachineOpen'); hideElm('flyMachineClose');
+        if (!skipValidation) skipValidation = false;
+
+        if (valid === true) {
+            var flyApiToken = getElm('flyAuthToken').value;
+            var appName = getElm('flyAppSelect').value;
+
+            fillFlyMachineList(progressElmId, gManageFlyMachineResponseElmId, flyApiToken, appName, gManageFlyMachineTargetElmId, currentPageNo, skipValidation, function () {
+                showAddFlyMachineBtn();
+            });
+        }
+    }
+
+    function flyResetMachineList() {
+        refreshFlyMachineList('refreshFlyMachineListProgress', 1, true);
+        setMachineAction();
+    }
+
+    function flyCreateMachine(progressElmId, responseElmId, authTokenVal, appNameVal, regionVal, machineNameVal, dockerImageVal, machineConfigVal, successCallback) {
+
+        var id = window.ajaxid++;
+        var responseElm = getElm(responseElmId);
+        var responseContainerElmId = responseElmId + "Container";
+        responseElm.textContent = '';
+        hideElm(responseContainerElmId);
+        var valid = true;
+
+        if (valid == true) {
+            if (appNameVal.trim().length === 0) {
+                showText(responseElm, 'Enter App Name', 'red');
+                valid = false;
+            }
+        }
+
+        if (valid == true) {
+            if (regionVal.trim().length === 0) {
+                showText(responseElm, 'Select Machine Region', 'red');
+                valid = false;
+            }
+        }
+
+        //if (valid == true) {
+        //    if (machineNameVal.trim().length === 0) {
+        //        showText(responseElm, 'Enter Machine Name', 'red');
+        //        valid = false;
+        //    }
+        //}
+
+        if (valid == true) {
+            if (dockerImageVal.trim().length === 0) {
+                showText(responseElm, 'Select Docker Image', 'red');
+                valid = false;
+            }
+        }
+
+        if (valid == true) {
+            if (machineConfigVal.trim().length === 0) {
+                showText(responseElm, 'Select Machine Config', 'red');
+                valid = false;
+            }
+        }
+
+        if (valid === true) {
+
+            let url = '/AppApi/FlyApi';
+            let urlMethod = 'POST';
+            let urlContent = {
+                "jsonrpc": '2.0', "method": 'CreateMachine', "params": {
+                    "fly_api_token": authTokenVal,
+                    "app_name": appNameVal,
+                    "region": regionVal,
+                    "machineName": machineNameVal,
+                    "dockerImage": dockerImageVal,
+                    "machineConfig": machineConfigVal,
+                }, "id": id
+            };
+
+            dopost(progressElmId, responseElmId, url, urlContent,
+                function (data) {
+                    if (data.hasOwnProperty('Result') === true) {
+                        var result = data.Result;
+
+                        if (result.hasOwnProperty('message') === true) {
+                            showText(responseElm, result.message, 'green');
+
+                            refreshFlyMachineList('refreshFlyMachineListProgress', 1);
+
+                            if (typeof successCallback === "function") {
+                                successCallback();
+                            }
+                        }
+                        else if (result.hasOwnProperty('error') === true) {
+                            showText(responseElm, result.error, 'red');
+                        }
+                    }
+                    else if ((data.hasOwnProperty('Error') === true) && (data.Error)) {
+                        var error = data.Error;
+                        if (error.hasOwnProperty('Message') === true) {
+                            showText(responseElm, error.Message, 'red');
+                        }
+                    }
+                },
+                function (data) {
+                    if ((data.hasOwnProperty('Error') === true) && (data.Error)) {
+                        var result = data.Error;
+                        if (result.hasOwnProperty('Message') === true) {
+                            showText(responseElm, result.Message, 'red');
+                        }
+                    }
+                    else if (data.hasOwnProperty('Result') === true) {
+                        var result = data.Result;
+                        if (result.hasOwnProperty('error') === true) {
+                            showText(responseElm, result.error, 'red');
+                        }
+                    }
+                });
+        }
+    }
+
+    function flyUpdateMachine(progressElmId, responseElmId, authTokenVal, appNameVal, dockerImageVal, machineConfigVal, machineVMSizeVal, machineVMRamVal, successCallback) {
+
+        var id = window.ajaxid++;
+        var responseElm = getElm(responseElmId);
+        var responseContainerElmId = responseElmId + "Container";
+        responseElm.textContent = '';
+        hideElm(responseContainerElmId);
+        var valid = true;
+
+        if (valid == true) {
+            if (appNameVal.trim().length === 0) {
+                showText(responseElm, 'Enter App Name', 'red');
+                valid = false;
+            }
+        }
+
+        var machineIdArr = [];
+        getElms(".machineSelectBox").forEach(function (elm) {
+            if (elm.checked == true) {
+                var machineId = elm.getAttribute("value");
+                machineIdArr.push(machineId);
+            }
+        });
+
+        if (machineIdArr.length == 0) {
+            showText(responseElm, 'Select Machine to Update');
+            valid = false;
+        }
+
+        if (valid == true) {
+            if (machineVMSizeVal.trim().length === 0) {
+                showText(responseElm, 'Select the Machine VM Size', 'red');
+                valid = false;
+            }
+        }
+
+        if (valid == true) {
+            if (machineVMRamVal.trim().length === 0) {
+                showText(responseElm, 'Select the Machine VM RAM', 'red');
+                valid = false;
+            }
+        }
+
+        if (valid == true) {
+            if (dockerImageVal.trim().length === 0) {
+                showText(responseElm, 'Select Docker Image', 'red');
+                valid = false;
+            }
+        }
+
+        if (valid == true) {
+            if (machineConfigVal.trim().length === 0) {
+                showText(responseElm, 'Select Machine Config', 'red');
+                valid = false;
+            }
+        }
+
+        if (valid === true) {
+            var machineListText = JSON.stringify(machineIdArr);
+
+            let url = '/AppApi/FlyApi';
+            let urlMethod = 'POST';
+            let urlContent = {
+                "jsonrpc": '2.0', "method": 'UpdateMachine', "params": {
+                    "fly_api_token": authTokenVal,
+                    "app_name": appNameVal,
+                    "machine_id_list": machineListText,
+                    "machineVMSize": machineVMSizeVal,
+                    "machineVMRam": machineVMRamVal,
+                    "dockerImage": dockerImageVal,
+                    "machineConfig": machineConfigVal
+                }, "id": id
+            };
+
+            dopost(progressElmId, responseElmId, url, urlContent,
+                function (data) {
+                    if (data.hasOwnProperty('Result') === true) {
+                        var result = data.Result;
+
+                        if (result.hasOwnProperty('message') === true) {
+                            showText(responseElm, result.message, 'green');
+
+                            if (typeof successCallback === "function") {
+                                successCallback();
+                            }
+                        }
+                        else if (result.hasOwnProperty('error') === true) {
+                            showText(responseElm, result.error, 'red');
+                        }
+                    }
+                    else if ((data.hasOwnProperty('Error') === true) && (data.Error)) {
+                        var error = data.Error;
+                        if (error.hasOwnProperty('Message') === true) {
+                            showText(responseElm, error.Message, 'red');
+                        }
+                    }
+                },
+                function (data) {
+                    if ((data.hasOwnProperty('Error') === true) && (data.Error)) {
+                        var result = data.Error;
+                        if (result.hasOwnProperty('Message') === true) {
+                            showText(responseElm, result.Message, 'red');
+                        }
+                    }
+                    else if (data.hasOwnProperty('Result') === true) {
+                        var result = data.Result;
+                        if (result.hasOwnProperty('error') === true) {
+                            showText(responseElm, result.error, 'red');
+                        }
+                    }
+                });
+        }
+    }
+
+    function flyStopMachine(progressElmId, responseElmId, authTokenVal, appNameVal, successCallback) {
+
+        var id = window.ajaxid++;
+        var responseElm = getElm(responseElmId);
+        var responseContainerElmId = responseElmId + "Container";
+        responseElm.textContent = '';
+        hideElm(responseContainerElmId);
+        var valid = true;
+
+        if (valid == true) {
+            if (appNameVal.trim().length === 0) {
+                showText(responseElm, 'Enter App Name', 'red');
+                valid = false;
+            }
+        }
+
+        var machineIdArr = [];
+        getElms(".machineSelectBox").forEach(function (elm) {
+            if (elm.checked == true) {
+                var machineId = elm.getAttribute("value");
+                machineIdArr.push(machineId);
+            }
+        });
+
+        if (machineIdArr.length == 0) {
+            showText(responseElm, 'Select Machine to Stop');
+            valid = false;
+        }
+
+        if (valid === true) {
+            var machineListText = JSON.stringify(machineIdArr);
+
+            let url = '/AppApi/FlyApi';
+            let urlMethod = 'POST';
+            let urlContent = {
+                "jsonrpc": '2.0', "method": 'StopMachine', "params": {
+                    "fly_api_token": authTokenVal,
+                    "app_name": appNameVal,
+                    "machine_id_list": machineListText,
+                }, "id": id
+            };
+
+            dopost(progressElmId, responseElmId, url, urlContent,
+                function (data) {
+                    if (data.hasOwnProperty('Result') === true) {
+                        var result = data.Result;
+
+                        if (result.hasOwnProperty('message') === true) {
+                            showText(responseElm, result.message, 'green');
+
+                            refreshFlyMachineList('refreshFlyMachineListProgress', 1);
+
+                            if (typeof successCallback === "function") {
+                                successCallback();
+                            }
+                        }
+                        else if (result.hasOwnProperty('error') === true) {
+                            showText(responseElm, result.error, 'red');
+                        }
+                    }
+                    else if ((data.hasOwnProperty('Error') === true) && (data.Error)) {
+                        var error = data.Error;
+                        if (error.hasOwnProperty('Message') === true) {
+                            showText(responseElm, error.Message, 'red');
+                        }
+                    }
+                },
+                function (data) {
+                    if ((data.hasOwnProperty('Error') === true) && (data.Error)) {
+                        var result = data.Error;
+                        if (result.hasOwnProperty('Message') === true) {
+                            showText(responseElm, result.Message, 'red');
+                        }
+                    }
+                    else if (data.hasOwnProperty('Result') === true) {
+                        var result = data.Result;
+                        if (result.hasOwnProperty('error') === true) {
+                            showText(responseElm, result.error, 'red');
+                        }
+                    }
+                });
+        }
+    }
+
+    function flyStartMachine(progressElmId, responseElmId, authTokenVal, appNameVal, successCallback) {
+
+        var id = window.ajaxid++;
+        var responseElm = getElm(responseElmId);
+        var responseContainerElmId = responseElmId + "Container";
+        responseElm.textContent = '';
+        hideElm(responseContainerElmId);
+        var valid = true;
+
+        if (valid == true) {
+            if (appNameVal.trim().length === 0) {
+                showText(responseElm, 'Enter App Name', 'red');
+                valid = false;
+            }
+        }
+
+        var machineIdArr = [];
+        getElms(".machineSelectBox").forEach(function (elm) {
+            if (elm.checked == true) {
+                var machineId = elm.getAttribute("value");
+                machineIdArr.push(machineId);
+            }
+        });
+
+        if (machineIdArr.length == 0) {
+            showText(responseElm, 'Select Machine to Start');
+            valid = false;
+        }
+
+        if (valid === true) {
+
+            var machineListText = JSON.stringify(machineIdArr);
+
+            let url = '/AppApi/FlyApi';
+            let urlMethod = 'POST';
+            let urlContent = {
+                "jsonrpc": '2.0', "method": 'StartMachine', "params": {
+                    "fly_api_token": authTokenVal,
+                    "app_name": appNameVal,
+                    "machine_id_list": machineListText,
+                }, "id": id
+            };
+
+            dopost(progressElmId, responseElmId, url, urlContent,
+                function (data) {
+                    if (data.hasOwnProperty('Result') === true) {
+                        var result = data.Result;
+
+                        if (result.hasOwnProperty('message') === true) {
+                            showText(responseElm, result.message, 'green');
+
+                            refreshFlyMachineList('refreshFlyMachineListProgress', 1);
+
+                            if (typeof successCallback === "function") {
+                                successCallback();
+                            }
+                        }
+                        else if (result.hasOwnProperty('error') === true) {
+                            showText(responseElm, result.error, 'red');
+                        }
+                    }
+                    else if ((data.hasOwnProperty('Error') === true) && (data.Error)) {
+                        var error = data.Error;
+                        if (error.hasOwnProperty('Message') === true) {
+                            showText(responseElm, error.Message, 'red');
+                        }
+                    }
+                },
+                function (data) {
+                    if ((data.hasOwnProperty('Error') === true) && (data.Error)) {
+                        var result = data.Error;
+                        if (result.hasOwnProperty('Message') === true) {
+                            showText(responseElm, result.Message, 'red');
+                        }
+                    }
+                    else if (data.hasOwnProperty('Result') === true) {
+                        var result = data.Result;
+                        if (result.hasOwnProperty('error') === true) {
+                            showText(responseElm, result.error, 'red');
+                        }
+                    }
+                });
+        }
+    }
+
+    function flyDeleteMachine(progressElmId, responseElmId, authTokenVal, appNameVal, successCallback) {
+
+        var id = window.ajaxid++;
+        var responseElm = getElm(responseElmId);
+        var responseContainerElmId = responseElmId + "Container";
+        responseElm.textContent = '';
+        hideElm(responseContainerElmId);
+        var valid = true;
+
+        if (valid == true) {
+            if (appNameVal.trim().length === 0) {
+                showText(responseElm, 'Enter App Name', 'red');
+                valid = false;
+            }
+        }
+
+        var machineIdArr = [];
+        getElms(".machineSelectBox").forEach(function (elm) {
+            if (elm.checked == true) {
+                var machineId = elm.getAttribute("value");
+                machineIdArr.push(machineId);
+            }
+        });
+
+        if (machineIdArr.length == 0) {
+            showText(responseElm, 'Select Machine to Delete');
+            valid = false;
+        }
+
+
+        if (valid === true) {
+
+            var machineListText = JSON.stringify(machineIdArr);
+
+            let url = '/AppApi/FlyApi';
+            let urlMethod = 'POST';
+            let urlContent = {
+                "jsonrpc": '2.0', "method": 'DeleteMachine', "params": {
+                    "fly_api_token": authTokenVal,
+                    "app_name": appNameVal,
+                    "machine_id_list": machineListText,
+                }, "id": id
+            };
+
+            dopost(progressElmId, responseElmId, url, urlContent,
+                function (data) {
+                    if (data.hasOwnProperty('Result') === true) {
+                        var result = data.Result;
+
+                        if (result.hasOwnProperty('message') === true) {
+                            showText(responseElm, result.message, 'green');
+
+                            refreshFlyMachineList('refreshFlyMachineListProgress', 1);
+
+                            if (typeof successCallback === "function") {
+                                successCallback();
+                            }
+                        }
+                        else if (result.hasOwnProperty('error') === true) {
+                            showText(responseElm, result.error, 'red');
+                        }
+                    }
+                    else if ((data.hasOwnProperty('Error') === true) && (data.Error)) {
+                        var error = data.Error;
+                        if (error.hasOwnProperty('Message') === true) {
+                            showText(responseElm, error.Message, 'red');
+                        }
+                    }
+                },
+                function (data) {
+                    if ((data.hasOwnProperty('Error') === true) && (data.Error)) {
+                        var result = data.Error;
+                        if (result.hasOwnProperty('Message') === true) {
+                            showText(responseElm, result.Message, 'red');
+                        }
+                    }
+                    else if (data.hasOwnProperty('Result') === true) {
+                        var result = data.Result;
+                        if (result.hasOwnProperty('error') === true) {
+                            showText(responseElm, result.error, 'red');
+                        }
+                    }
+                });
+        }
+    }
+
+    function flyKillMachine(progressElmId, responseElmId, authTokenVal, appNameVal, successCallback) {
+
+        var id = window.ajaxid++;
+        var responseElm = getElm(responseElmId);
+        var responseContainerElmId = responseElmId + "Container";
+        responseElm.textContent = '';
+        hideElm(responseContainerElmId);
+        var valid = true;
+
+        if (valid == true) {
+            if (appNameVal.trim().length === 0) {
+                showText(responseElm, 'Enter App Name', 'red');
+                valid = false;
+            }
+        }
+
+        var machineIdArr = [];
+        getElms(".machineSelectBox").forEach(function (elm) {
+            if (elm.checked == true) {
+                var machineId = elm.getAttribute("value");
+                machineIdArr.push(machineId);
+            }
+        });
+
+        if (machineIdArr.length == 0) {
+            showText(responseElm, 'Select Machine to Kill');
+            valid = false;
+        }
+
+        if (valid === true) {
+
+            var machineListText = JSON.stringify(machineIdArr);
+
+            let url = '/AppApi/FlyApi';
+            let urlMethod = 'POST';
+            let urlContent = {
+                "jsonrpc": '2.0', "method": 'KillMachine', "params": {
+                    "fly_api_token": authTokenVal,
+                    "app_name": appNameVal,
+                    "machine_id_list": machineListText,
+                }, "id": id
+            };
+
+            dopost(progressElmId, responseElmId, url, urlContent,
+                function (data) {
+                    if (data.hasOwnProperty('Result') === true) {
+                        var result = data.Result;
+
+                        if (result.hasOwnProperty('message') === true) {
+                            showText(responseElm, result.message, 'green');
+
+                            refreshFlyMachineList('refreshFlyMachineListProgress', 1);
+
+                            if (typeof successCallback === "function") {
+                                successCallback();
+                            }
+                        }
+                        else if (result.hasOwnProperty('error') === true) {
+                            showText(responseElm, result.error, 'red');
+                        }
+                    }
+                    else if ((data.hasOwnProperty('Error') === true) && (data.Error)) {
+                        var error = data.Error;
+                        if (error.hasOwnProperty('Message') === true) {
+                            showText(responseElm, error.Message, 'red');
+                        }
+                    }
+                },
+                function (data) {
+                    if ((data.hasOwnProperty('Error') === true) && (data.Error)) {
+                        var result = data.Error;
+                        if (result.hasOwnProperty('Message') === true) {
+                            showText(responseElm, result.Message, 'red');
+                        }
+                    }
+                    else if (data.hasOwnProperty('Result') === true) {
+                        var result = data.Result;
+                        if (result.hasOwnProperty('error') === true) {
+                            showText(responseElm, result.error, 'red');
+                        }
+                    }
+                });
+        }
+    }
+
+    function flyCloneMachine(progressElmId, responseElmId, authTokenVal, appNameVal, machineIdVal, newMachineNameVal, newRegionVal, successCallback) {
+
+        var id = window.ajaxid++;
+        var responseElm = getElm(responseElmId);
+        var responseContainerElmId = responseElmId + "Container";
+        responseElm.textContent = '';
+        hideElm(responseContainerElmId);
+        var valid = true;
+
+        if (valid == true) {
+            if (appNameVal.trim().length === 0) {
+                showText(responseElm, 'Enter App Name', 'red');
+                valid = false;
+            }
+        }
+
+        if (valid == true) {
+            if (machineIdVal.trim().length === 0) {
+                showText(responseElm, 'Select Machine Id', 'red');
+                valid = false;
+            }
+        }
+
+        if (valid == true) {
+            if (newRegionVal.trim().length === 0) {
+                showText(responseElm, 'Select the New Machine Region', 'red');
+                valid = false;
+            }
+        }
+
+        if (valid === true) {
+
+            let url = '/AppApi/FlyApi';
+            let urlMethod = 'POST';
+            let urlContent = {
+                "jsonrpc": '2.0', "method": 'CloneMachine', "params": {
+                    "fly_api_token": authTokenVal,
+                    "app_name": appNameVal,
+                    "machine_id": machineIdVal,
+                    "new_machineName": newMachineNameVal,
+                    "new_region": newRegionVal
+                }, "id": id
+            };
+
+            dopost(progressElmId, responseElmId, url, urlContent,
+                function (data) {
+                    if (data.hasOwnProperty('Result') === true) {
+                        var result = data.Result;
+
+                        if (result.hasOwnProperty('message') === true) {
+                            showText(responseElm, result.message, 'green');
+
+                            refreshFlyMachineList('refreshFlyMachineListProgress', 1);
+
+                            if (typeof successCallback === "function") {
+                                successCallback();
+                            }
+                        }
+                        else if (result.hasOwnProperty('error') === true) {
+                            showText(responseElm, result.error, 'red');
+                        }
+                    }
+                    else if ((data.hasOwnProperty('Error') === true) && (data.Error)) {
+                        var error = data.Error;
+                        if (error.hasOwnProperty('Message') === true) {
+                            showText(responseElm, error.Message, 'red');
+                        }
+                    }
+                },
+                function (data) {
+                    if ((data.hasOwnProperty('Error') === true) && (data.Error)) {
+                        var result = data.Error;
+                        if (result.hasOwnProperty('Message') === true) {
+                            showText(responseElm, result.Message, 'red');
+                        }
+                    }
+                    else if (data.hasOwnProperty('Result') === true) {
+                        var result = data.Result;
+                        if (result.hasOwnProperty('error') === true) {
+                            showText(responseElm, result.error, 'red');
+                        }
+                    }
+                });
+        }
+    }
+
+    function flyGetMachineInfo(progressElmId, responseElmId, authTokenVal, appNameVal, machineIdVal, targetElmId, successCallback) {
+
+        var id = window.ajaxid++;
+        var responseElm = getElm(responseElmId);
+        var responseContainerElmId = responseElmId + "Container";
+        responseElm.textContent = '';
+        hideElm(responseContainerElmId);
+        var valid = true;
+
+        if (valid == true) {
+            if (appNameVal.trim().length === 0) {
+                showText(responseElm, 'Enter App Name', 'red');
+                valid = false;
+            }
+        }
+
+        if (valid == true) {
+            if (machineIdVal.trim().length === 0) {
+                showText(responseElm, 'Select Machine Id', 'red');
+                valid = false;
+            }
+        }
+
+        if (valid === true) {
+
+            let url = '/AppApi/FlyApi';
+            let urlMethod = 'POST';
+            let urlContent = {
+                "jsonrpc": '2.0', "method": 'GetMachineInfo', "params": {
+                    "fly_api_token": authTokenVal,
+                    "app_name": appNameVal,
+                    "machine_id": machineIdVal,
+                }, "id": id
+            };
+
+            dopost(progressElmId, responseElmId, url, urlContent,
+                function (data) {
+                    if (data.hasOwnProperty('Result') === true) {
+                        var result = data.Result;
+
+                        if (result.hasOwnProperty('html') === true) {
+                            var rootNode = getElm(targetElmId);
+                            rootNode.innerHTML = result.html;
+                            showElm(targetElmId);
+
+                            if (typeof successCallback === "function") {
+                                successCallback();
+                            }
+                        }
+                        else if (result.hasOwnProperty('message') === true) {
+                            showText(responseElm, result.message, 'green');
+
+                            if (typeof successCallback === "function") {
+                                successCallback();
+                            }
+                        }
+                        else if (result.hasOwnProperty('error') === true) {
+                            showText(responseElm, result.error, 'red');
+                        }
+                    }
+                    else if ((data.hasOwnProperty('Error') === true) && (data.Error)) {
+                        var error = data.Error;
+                        if (error.hasOwnProperty('Message') === true) {
+                            showText(responseElm, error.Message, 'red');
+                        }
+                    }
+                },
+                function (data) {
+                    if ((data.hasOwnProperty('Error') === true) && (data.Error)) {
+                        var result = data.Error;
+                        if (result.hasOwnProperty('Message') === true) {
+                            showText(responseElm, result.Message, 'red');
+                        }
+                    }
+                    else if (data.hasOwnProperty('Result') === true) {
+                        var result = data.Result;
+                        if (result.hasOwnProperty('error') === true) {
+                            showText(responseElm, result.error, 'red');
+                        }
+                    }
+                });
+        }
+    }
+
+    function setMachineAction() {
+
+        getElm('updateMachine').setAttribute("disabled", true);
+        getElm('getMachineInfo').setAttribute("disabled", true);
+        getElm('startMachine').setAttribute("disabled", true);
+        getElm('stopMachine').setAttribute("disabled", true);
+        getElm('deleteMachine').setAttribute("disabled", true);
+        getElm('killMachine').setAttribute("disabled", true);
+
+        var machineIdArr = [];
+        var machineStateArr = [];
+        if (haveElms(".machineSelectBox") == true) {
+            getElms(".machineSelectBox").forEach(function (elm) {
+                if (elm.checked == true) {
+                    var machineId = elm.getAttribute("value");
+                    machineIdArr.push(machineId);
+
+                    var machineState = elm.getAttribute("state");
+                    machineStateArr.push(machineState);
+                }
+            });
+        }
+
+        for (var i = 0; i < machineIdArr.length; i++) {
+            var machineIdVal = machineIdArr[i];
+            var machineStatusVal = machineStateArr[i];
+
+            getElm('flyMachineId').value = machineIdVal;
+
+            getElm('updateMachine').removeAttribute("disabled");
+            getElm('getMachineInfo').removeAttribute("disabled");
+
+            if (machineStatusVal == "created") {
+                getElm('startMachine').removeAttribute("disabled");
+                getElm('deleteMachine').removeAttribute("disabled");
+            }
+            if (machineStatusVal == "stopped") {
+                getElm('startMachine').removeAttribute("disabled");
+            }
+            if (machineStatusVal == "started") {
+                getElm('stopMachine').removeAttribute("disabled");
+                getElm('killMachine').removeAttribute("disabled");
+            }
+            if (machineStatusVal == "stopped") {
+                getElm('deleteMachine').removeAttribute("disabled");
+            }
+        }
+    }
+
+</script>
+
+<div class="flex-card card_border" id="createFlyMachinesDiv">
+
+    <div class="flex-content-wrap" style="margin: 5px 5px;width:100%;min-height:0px;" onclick="toggleElm('manageFlyMachines');toggleElm('flyMachineOpen'); toggleElm('flyMachineClose');">
+        <div class="flex-item-stretch" style="text-align:center;">
+            <strong>Create Fly Machines</strong>
+        </div>
+        <svg xmlns="http://www.w3.org/2000/svg" id="flyMachineOpen" style="width:16px;height:16px;margin:0 10px 0 0;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M19 13l-7 7-7-7m14-8l-7 7-7-7" />
+        </svg>
+        <svg xmlns="http://www.w3.org/2000/svg" id="flyMachineClose" style="width:16px;height:16px;margin:0 10px 0 0;display:none;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5 11l7-7 7 7M5 19l7-7 7 7" />
+        </svg>
+    </div>
+
+    <div id="manageFlyMachines" style="display:none;">
+
+        <div class="flex-content-wrap">
+            <label style="width:100%;margin: 5px auto;">Fly Machine Name</label>
+            <div class="flex-item-stretch border" style="height: 40px;">
+                <input style="width:100%;border:none;" id="flyMachineName" type="text" placeholder="Optional Fly Machine Name" value="" />
+            </div>
+        </div>
+
+        <div class="flex-content-wrap">
+            <label style="width:100%;margin: 5px auto;">Machine Image*</label>
+            <div class="flex-item-stretch border" style="height: 40px;">
+                <select id="flyDockerImages" style="width:100%;border:none;padding: 0 0 0 5px">
+                    {{@CreateDockerImages}}
+                    <option {{@IsDefault}} selected="selected" {{/IsDefault}}>{{$DockerImageName}}</option>
+                    {{/CreateDockerImages}}
+                </select>
+            </div>
+        </div>
+
+        {{FlyRegions}}
+
+        <div class="flex-content-wrap">
+            <label style="width:100%;margin: 5px auto;">Fly Machine Template*</label>
+            <div class="flex-item-stretch border-left" style="height: 40px;">
+                <select id="flyMachineCreateConfigs" style="width: 100%; border: none; padding: 0 0 0 5px">
+                    {{@MachineCreateConfigs}}
+                    <option value="{{$ConfigPath}}">{{$ConfigName}}</option>
+                    {{/MachineCreateConfigs}}
+                </select>
+            </div>
+            <button class="border-right" style="width:100px;height:40px;background-color:lightgray;"
+                    onclick="flyCreateMachine('flyCreateMachineProgress', 'flyCreateMachineResponse', getElm('flyAuthToken').value, getElm('flyAppSelect').value, getElm('flyRegions').value, getElm('flyMachineName').value, getElm('flyDockerImages').value, getElm('flyMachineCreateConfigs').value, function () { })">
+                Create <div id="flyCreateMachineProgress"></div>
+            </button>
+        </div>
+
+    </div>
+
+</div>
+
+<div class="notification is-marginless" id="flyCreateMachineResponseContainer" style="display:none;">
+    <button class="delete" onclick="hideElm('flyCreateMachineResponseContainer');"></button>
+    <div id="flyCreateMachineResponse"></div>
+</div>
+
+<div class="flex-card card_border" id="updateFlyMachinesDiv" style="display:none;">
+
+    <div class="flex-content-wrap" style="margin: 5px 5px;width:100%;min-height:0px;" onclick="toggleElm('createFlyMachinesDiv');toggleElm('updateFlyMachinesDiv');">
+        <div class="flex-item-stretch" style="text-align:center;">
+            <strong>Update Fly Machines</strong>
+        </div>
+        <svg xmlns="http://www.w3.org/2000/svg" style="width:16px;height:16px;margin:0 10px 0 0;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5 11l7-7 7 7M5 19l7-7 7 7" />
+        </svg>
+    </div>
+
+    <div class="flex-content-wrap">
+        <label style="width:100%;margin: 5px auto;">Machine Image*</label>
+        <div class="flex-item-stretch border" style="height: 40px;">
+            <select id="flyUpdateDockerImages" style="width:100%;border:none;padding: 0 0 0 5px">
+                {{@UpdateDockerImages}}
+                <option {{@IsDefault}} selected="selected" {{/IsDefault}}>{{$DockerImageName}}</option>
+                {{/UpdateDockerImages}}
+            </select>
+        </div>
+    </div>
+
+    {{FlyVMSizes}}
+
+    {{FlyVMMemory}}
+    
+    <div class="flex-content-wrap">
+        <label style="width:100%;margin: 5px auto;">Fly Machine Template*</label>
+        <div class="flex-item-stretch border-left" style="height: 40px;">
+            <select id="flyMachineUpdateConfigs" style="width: 100%; border: none; padding: 0 0 0 5px">
+                {{@MachineUpdateConfigs}}
+                <option value="{{$ConfigPath}}">{{$ConfigName}}</option>
+                {{/MachineUpdateConfigs}}
+            </select>
+        </div>
+
+        <button class="border-right" style="width:100px;height:40px;background-color:lightgray;"
+                onclick="flyUpdateMachine('flyUpdateMachineProgress', 'flyUpdateMachineResponse', getElm('flyAuthToken').value, getElm('flyAppSelect').value, getElm('flyUpdateDockerImages').value, getElm('flyMachineUpdateConfigs').value, getElm('flyVMSizes').value, getElm('flyVMMemory').value,function () { })">
+            Update <div id="flyUpdateMachineProgress"></div>
+        </button>
+    </div>
+
+</div>
+
+<div class="notification is-marginless" id="flyUpdateMachineResponseContainer" style="display:none;">
+    <button class="delete" onclick="hideElm('flyUpdateMachineResponseContainer');"></button>
+    <div id="flyUpdateMachineResponse"></div>
+</div>
+
+<div class="flex-card card_border">
+
+    <div class="flex-content-wrap">
+        {{FlyMachineInfo}}
+    </div>
+
+    <div class="flex-content-wrap" style="display:none;">
+        <div class="flex-item-stretch border" style="height: 40px;">
+            <input style="width:100%;border:none;text-align:center;background-color:lightgray" id="flyMachineId" type="text" placeholder="Select Fly Machine Id" value="" readonly />
+        </div>
+    </div>
+
+    <div class="notification is-marginless" id="flyMachineResponseContainer" style="display:none;">
+        <button class="delete" onclick="hideElm('flyMachineResponseContainer');"></button>
+        <div id="flyMachineResponse"></div>
+    </div>
+
+    <div class="flex-content-wrap" style="width:100%;text-align: center;margin: 10px 0px;">
+        <button class="button border" id="updateMachine" style="margin: 0 5px 5px 0; min-width: 75px; height: 40px; background-color: lightgray; color: black; font-weight: bolder;" disabled="disabled"
+                onclick="toggleElm('updateFlyMachinesDiv');toggleElm('createFlyMachinesDiv')">
+            Update
+        </button>
+        <button class="button border" id="getMachineInfo" style="margin: 0 5px 5px 0; min-width: 75px; height: 40px; background-color: lightgray; color: black; font-weight: bolder;" disabled="disabled"
+                onclick="if (isDisplayNoneElm(getElm('machineInfoDiv')) == true) { flyGetMachineInfo('flyGetMachineInfoProgress', 'flyMachineResponse', getElm('flyAuthToken').value, getElm('flyAppSelect').value, getElm('flyMachineId').value, 'machineInfoDiv', function () { }); } else { hideElm('machineInfoDiv'); }">
+            GetInfo <div id="flyGetMachineInfoProgress"></div>
+        </button>
+        <button class="button border" id="startMachine" style="margin: 0 5px 5px 0; min-width: 75px; height: 40px; background-color: lightgray; color: black; font-weight: bolder;" disabled="disabled"
+                onclick="flyStartMachine('flyStartMachineProgress', 'flyMachineResponse', getElm('flyAuthToken').value, getElm('flyAppSelect').value, function () { setMachineAction(); })">
+            Start <div id="flyStartMachineProgress"></div>
+        </button>
+        <button class="button border" id="stopMachine" style="margin: 0 5px 5px 0; min-width: 75px; height: 40px; background-color: lightgray; color: black; font-weight: bolder;" disabled="disabled"
+                onclick="flyStopMachine('flyStopMachineProgress', 'flyMachineResponse', getElm('flyAuthToken').value, getElm('flyAppSelect').value, function () { setMachineAction(); })">
+            Stop <div id="flyStopMachineProgress"></div>
+        </button>
+        <button class="button border" id="deleteMachine" style="margin: 0 5px 5px 0; min-width: 75px; height: 40px; background-color: lightgray; color: red; font-weight: bolder;" disabled="disabled"
+                onclick="flyDeleteMachine('flyDeleteMachineProgress', 'flyMachineResponse', getElm('flyAuthToken').value, getElm('flyAppSelect').value, function () { setMachineAction(); })">
+            Delete <div id="flyDeleteMachineProgress"></div>
+        </button>
+        <button class="button border" id="killMachine" style="min-width: 75px; height: 40px; background-color: lightgray; color: red; font-weight:bolder;" disabled="disabled"
+                onclick="flyKillMachine('flyKillMachineProgress', 'flyMachineResponse', getElm('flyAuthToken').value, getElm('flyAppSelect').value, function () { setMachineAction(); })">
+            Kill <div id="flyKillMachineProgress"></div>
+        </button>
+
+    </div>
+
+</div>
+
+
+<div class="flex-card card_border" id="machineInfoDiv" style="display:none;">
+
+</div>

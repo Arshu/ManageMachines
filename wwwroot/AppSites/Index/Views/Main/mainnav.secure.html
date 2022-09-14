@@ -1,0 +1,66 @@
+  <!-- Navbar section -->
+<header id="header">
+
+    <nav class="navbar navbar-expand-md navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+                <img src="/Content/Images/logo.svg"
+                     alt="logo" height="64" />
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a href="/Fly/Main" class="nav-link curv btn px-3 pt-1 m-1">Manage Machines</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/Index/Contact" class="nav-link curv btn px-3 pt-1 m-1">Contact Me</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header section -->
+    <div class="cover row mx-0 px-3 px-md-5 align-items-center py-3">
+
+        <div class="col-md-6">
+            <h1 class="title"><b>Publish Static Apps</b></h1>
+            <h6 class="card-text pt-3">from <a href="https://github.com/Arshu/Landing-Page.git">Git</a> in <a href="https://fly.io">Fly.io</a> Machines in <a href="https://fly.io/docs/reference/regions/">multiple regions</a></h6>
+        </div>
+        <div class="text-center col-lg-6 offset-lg-0 col-sm-12 mt-4 mt-lg-0">
+            {{FlyCreate}}
+        </div>
+    </div>
+
+    <!-- Header section -->
+    <div class="cover row mx-0 px-3 px-md-5 align-items-center">
+
+        <div class="col-md-6">
+            <p class="text-secondary my-4 my-lg-5">
+                Create your MicroVM in fly.io in any supported edge region and Sync your edge app from Git.<br />
+                The MicroVM will auto shutdown on ~30seconds idle /auto start on request within ~2-3seconds <br/>
+                Fly.io will only <strong>charge when the microvm runs!!!</strong>
+            </p>
+            <p class="text-secondary my-4 my-lg-5">
+                Portable App is available in <a href="https://github.com/Arshu/MachineManager">Arshu/MachineManager</a> GitHub<br />
+                Edge App Docker Image <a href="https://hub.docker.com/r/arshucs/edgeapp">arshucs/edgeapp</a> <br />
+                <span style="color:red;">(All Deployed MicroVM will be hourly destroyed. Please use only for testing)</span>
+            </p>
+        </div>
+        <div class="offset-2 col-8 col-lg-6 offset-lg-0 text-center mt-4 mt-lg-0">
+
+            <img class="img-fluid" width="500"
+                 src="Content/Images/headerImg.png"
+                 alt="">
+        </div>
+
+    </div>
+
+
+</header>
+

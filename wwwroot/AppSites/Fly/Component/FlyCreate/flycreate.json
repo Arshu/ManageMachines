@@ -1,0 +1,38 @@
+{
+  "DefaultFlyRegion": "sin",
+  "FlyOrgs": [
+    {
+      "FlyOrgName": "Personal",
+      "FlyOrgSlug": "personal",
+      "IsDefault": true
+    }
+  ],
+  "FlyRegions": [
+    {
+      "RegionCode": "sin",
+      "RegionName": "Singapore",
+      "IsDefault": true
+    },
+    {
+      "RegionCode": "syd",
+      "RegionName": "Sydney, Australia",
+      "IsDefault": false
+    }
+  ],
+  "DockerImages": [
+    {
+      "DockerImageName": "arshucs/edgeapp:latest",
+      "IsDefault": true
+    },
+    {
+      "DockerImageName": "arshucs/appweb:latest",
+      "IsDefault": false
+    }
+  ],
+  "MachineCreateConfigs": [
+    {
+      "ConfigName": "Basic Create Template",
+      "ConfigPath": "basic_create"
+    }
+  ]
+}

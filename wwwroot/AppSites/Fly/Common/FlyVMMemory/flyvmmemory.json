@@ -1,0 +1,21 @@
+{
+  "DefaultFlyVMMemory": "256MB",
+  "FlyVMMemory": [
+    {
+      "FlyVMMemory": "256MB",
+      "IsDefault": true,
+      "IsVisible": true
+    },
+    {
+      "FlyVMMemory": "512MB",
+      "IsDefault": false,
+      "IsVisible": true
+    },
+    {
+      "FlyVMMemory": "1024MB",
+      "IsDefault": false,
+      "IsVisible": false
+    }
+  ]
+
+}

@@ -1,0 +1,17 @@
+
+{{@HaveNextPage}}
+<button class="border" style="width:40px;height:40px;" onclick="return refreshFlyMachineList('nextFlyMachineListProgress', '{{$NextPage}}')">
+    <svg  fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 9l3 3m0 0l-3 3m3-3H8m13 0a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+    <span id="nextFlyMachineListProgress"></span>
+</button>
+{{/HaveNextPage}}
+{{^HaveNextPage}}
+<button class="border" style="width:40px;height:40px;" disabled>
+    <svg  fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 9l3 3m0 0l-3 3m3-3H8m13 0a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+</button>
+{{/HaveNextPage}}
+<button class="border" style="width:40px;height:40px" id="flyMachineRefreshBtn"
+        onclick="refreshFlyMachineList('refreshFlyMachineListProgress', 1)">
+    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+    <div id="refreshFlyMachineListProgress"></div>
+</button>
