@@ -6,6 +6,10 @@
       "IsDefault": true
     },
     {
+      "DockerImageName": "arshucs/appweb:latest",
+      "IsDefault": true
+    },
+    {
       "DockerImageName": "registry.fly.io/edgeadmin:latest",
       "IsDefault": false
     },
