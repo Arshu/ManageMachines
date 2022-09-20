@@ -836,38 +836,6 @@
         </div>
 
         <div class="flex-content-wrap">
-            <label style="width:100%;margin: 5px auto;">Set/UnSet App Secret</label>
-            <button class="border-left" style="width: 70px; height: 40px; background-color: lightgray; color: black; font-weight: bolder;" id="flyUnSetSecretBtn"
-                    onclick="flyUnSetAppSecret('flyAppUnSetSecretProgress', 'flySecretResponse', getElm('flyAuthToken').value, getElm('flyAppName').value, getElm('flyAppSecret').value, 'flyUnSetSecretBtn', function () {   })">
-                UnSet<div id="flyAppUnSetSecretProgress"></div>
-            </button>
-            <div class="flex-item-stretch border-top-bottom" style="height: 40px;">
-                <input style="width:100%;border:none;" id="flyAppSecret" type="text" placeholder="Name = Value Name = Value" value="" />
-            </div>
-            <button class="border-right" style="width: 100px; height: 40px; background-color: lightgray; color: black; font-weight: bolder;" id="flyAppSetSecretBtn"
-                    onclick="flySetAppSecret('flyAppSetSecretProgress', 'flySecretResponse', getElm('flyAuthToken').value, getElm('flyAppName').value, getElm('flyAppSecret').value, 'flyAppSetSecretBtn', function () {   })">
-                Set Secret<div id="flyAppSetSecretProgress"></div>
-            </button>
-        </div>
-
-        <div class="notification is-marginless" id="flySecretResponseContainer" style="display:none;">
-            <button class="delete" onclick="hideElm('flySecretResponseContainer');"></button>
-            <div id="flySecretResponse"></div>
-        </div>
-
-        <div class="flex-content-wrap" style="width:100%;text-align: center;margin: 10px 0px;">
-            <button class="border" style="margin: 0 5px 5px 0; min-width: 100px; height: 40px; background-color: lightgray; color: black; font-weight: bolder;" id="flyAppListSecretBtn"
-                    onclick="flyListAppSecret('flyAppListSecretProgress', 'flySecretResponse', getElm('flyAuthToken').value, getElm('flyAppName').value, 'appSecretList', 'flyAppListSecretBtn', function () {  })">
-                List Secret <div id="flyAppListSecretProgress"></div>
-            </button>
-        </div>
-
-        <div id="appSecretList" class="border" style="text-align:center;">
-
-        </div>
-
-
-        <div class="flex-content-wrap">
             <label style="width:100%;margin: 5px auto;">Fly App Network</label>
             <div class="flex-item-stretch border" style="height: 40px;">
                 <input style="width:100%;border:none;" id="flyAppNetwork" type="text" placeholder="Optional Fly App Private Network" value="" />
@@ -879,6 +847,10 @@
             <div class="flex-item-stretch border-left" style="height: 40px;">
                 <input readonly style="width:100%;border:none;" id="flyAppIP4Address" type="text" placeholder="App IP4 Address" value="" />
             </div>
+            <button class="border-top-bottom" style="width:100px;height:40px;background-color:lightgray;display:none;" id="appIPInfoResetButton"
+                    onclick="resetAppIPInfo('flyDNSAppSelect', 'flyAppName', 'flyAppIP4Address', 'flyAppIP6Address', 'flyCreateAppBtn', 'flyAllocateAppIPBtn', 'flyReleaseAppIPBtn', 'flyDeleteAppBtn');">
+                Reset IP App
+            </button>
             <button class="border-right" style="width: 100px; height: 40px; background-color: lightgray; color: black; font-weight: bolder;" id="getAppIPInfo"
                     onclick="triggerEvent('appIPInfoResetButton', 'click'); flyGetAppIPInfo('flyAppIPInfoProgress', 'flyAppResponse', getElm('flyAuthToken').value, getElm('flyAppName').value, 'flyAppIP4Address', 'flyAppIP6Address', 'flyCreateAppBtn', 'flyAllocateAppIPBtn', 'flyReleaseAppIPBtn', 'flyDeleteAppBtn', function () {   })">
                 Get IP Info<div id="flyAppIPInfoProgress"></div>
@@ -908,7 +880,6 @@
             </label>
         </div>
 
-
         <div class="flex-content-wrap" style="width:100%;text-align: center;margin: 10px 0px;">
             <button class="border" style="margin: 0 5px 5px 0; width: 100px; height: 40px; background-color: lightgray; color: black; font-weight: bolder;"
                     id="flyCreateAppBtn"
@@ -932,6 +903,36 @@
             </button>
         </div>
 
+        <div class="flex-content-wrap">
+            <label style="width:100%;margin: 5px auto;">Set/UnSet App Secret</label>
+            <button class="border-left" style="width: 70px; height: 40px; background-color: lightgray; color: black; font-weight: bolder;" id="flyUnSetSecretBtn"
+                    onclick="flyUnSetAppSecret('flyAppUnSetSecretProgress', 'flySecretResponse', getElm('flyAuthToken').value, getElm('flyAppName').value, getElm('flyAppSecret').value, 'flyUnSetSecretBtn', function () {   })">
+                UnSet<div id="flyAppUnSetSecretProgress"></div>
+            </button>
+            <div class="flex-item-stretch border-top-bottom" style="height: 40px;">
+                <input style="width:100%;border:none;" id="flyAppSecret" type="text" placeholder="Name = Value Name = Value" value="" />
+            </div>
+            <button class="border-right" style="width: 100px; height: 40px; background-color: lightgray; color: black; font-weight: bolder;" id="flyAppSetSecretBtn"
+                    onclick="flySetAppSecret('flyAppSetSecretProgress', 'flySecretResponse', getElm('flyAuthToken').value, getElm('flyAppName').value, getElm('flyAppSecret').value, 'flyAppSetSecretBtn', function () {   })">
+                Set Secret<div id="flyAppSetSecretProgress"></div>
+            </button>
+        </div>
+
+        <div class="notification is-marginless" id="flySecretResponseContainer" style="display:none;">
+            <button class="delete" onclick="hideElm('flySecretResponseContainer');"></button>
+            <div id="flySecretResponse"></div>
+        </div>
+
+        <div class="flex-content-wrap" style="width:100%;text-align: center;margin: 10px 0px;">
+            <button class="border" style="margin: 0 5px 5px 0; min-width: 100px; height: 40px; background-color: lightgray; color: black; font-weight: bolder;" id="flyAppListSecretBtn"
+                    onclick="flyListAppSecret('flyAppListSecretProgress', 'flySecretResponse', getElm('flyAuthToken').value, getElm('flyAppName').value, 'appSecretList', 'flyAppListSecretBtn', function () {  })">
+                List Secret <div id="flyAppListSecretProgress"></div>
+            </button>
+        </div>
+
+        <div id="appSecretList" class="border" style="text-align:center;">
+
+        </div>
     </div>
 
 </div>
