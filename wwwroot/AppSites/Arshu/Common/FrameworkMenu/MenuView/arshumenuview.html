@@ -133,7 +133,15 @@
         <a href="#" onclick="window.open('{{$DomainUrl}}', '_blank');">
             Inspect Toolbar
         </a>
-    </li>    
+    </li>
+    {{@HaveGitApiService}}
+    <li class="menuitem" style="position:relative;cursor:pointer;" onclick="showGitViewer('showMenuGitProgress')">
+        Git <div id="showMenuGitProgress"></div>
+    </li>
+    {{/HaveGitApiService}}
+    <li class="menuitem" style="position:relative;cursor:pointer;" onclick="showComponentSourceViewer('showMenuViewProgress', '{{$AppSite}}', '{{$AppView}}', '{{$RootComponentID}}', true)">
+        View <div id="showMenuViewProgress"></div>
+    </li>
     {{@LoginAuthenticated}}
     <li class="menuitem logoff">
         <a href="#" class="logoff">LogOut</a>

@@ -1,6 +1,12 @@
 {
   "config": {
     "image": "{{$AppImage}}",
+    "env": {
+    },
+    "restart": {
+      "policy": "",
+      "max_retries": 0
+    },
     "guest": {
       "cpu_kind": "shared",
       "cpus": 1,

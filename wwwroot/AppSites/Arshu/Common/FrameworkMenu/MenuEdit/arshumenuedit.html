@@ -147,6 +147,12 @@
         Git <div id="showMenuGitProgress"></div>
     </li>
     {{/HaveGitApiService}}
+    <li class="menuitem" style="position:relative;cursor:pointer;" onclick="showComponentSourceViewer('showMenuEditProgress', '{{$AppSite}}', '{{$AppView}}', '{{$RootComponentID}}', true)">
+        View <div id="showMenuEditProgress"></div>
+    </li>
+    <li class="menuitem" style="position:relative;cursor:pointer;" onclick="showComponentSourceEditor('showMenuEditProgress', '{{$AppSite}}', '{{$AppView}}', '{{$RootComponentID}}', true)">
+        Edit
+    </li>
     {{@LoginAuthenticated}}
     <li class="menuitem logoff">
         <a href="#" class="logoff">LogOut</a>

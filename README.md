@@ -1,25 +1,21 @@
 # Fly Manager
 
-Reference implementaion of Portable Fly Manager for managing <a href="https://fly.io">fly.io</a> machines to run in servers, desktops and mobile.
+Implementaion of Portable Fly Manager for managing <a href="https://fly.io">fly.io</a> machines to run in servers, desktops and mobile.
 
-Demo Hosted version is in <a href="https://guiapp.fly.dev">https://guiapp.fly.dev</a> (Will be periodically reinstalled)
+Demo Hosted version is in <a href="https://edgeadmin.fly.dev">https://edgeadmin.fly.dev</a> (Will be periodically reinstalled and hence loose the Login Credentials)
 
-Docker Image is <a href="https://hub.docker.com/r/arshucs/guiapp">arshucs/guiapp</a>
+Docker Image is <a href="https://hub.docker.com/r/arshucs/edgeapp">arshucs/edgeapp</a>
 
-Source of the Web UI is in the current repository under wwwroot folder of linux64_musl folder.
+Source of the Web UI is in the current repository under wwwroot folder.
 
-![Manage Fly Machines](Screenshot.png) "Portable Fly Manager for Managing Fly Machines".
+![Manage Fly Machines](Screenshot.png) "Portable Machine Manager for Managing Fly Machines".
 
-## Configure with Own Admin User
+# Getting Started
 
-    1. Configure the appconfig.json as below to stop loading the cached Embedded AppSites
+### Clone the Repository and Run the Portal Machine Manager in the Desktop
 
-    {
-      "AssetTypeName": "AppWeb.Web.AssetRegister",
-      "AssetDll": "AppWeb.Web.dll",
-      "IsEnabled": false
-    }
+### Ensure that FlyCtl is installed and Wireguard Connection is Setup for the Fly User.
 
-    2. Remove the Members.dat/Roles.dat from wwwroot\App_Data Folder
+### Deploy docker image arshucs/edgeapp into Fly and Login
 
-    3. Once the above action are done packaging the runtime in docker will on launch will prompt for the initial admin user id and password.
+### Modify the UI in the wwwroot folder and copy to the respective linux64 directory and deploy to fly

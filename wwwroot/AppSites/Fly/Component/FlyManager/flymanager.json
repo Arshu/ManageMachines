@@ -8,6 +8,10 @@
     {
       "DockerImageName": "registry.fly.io/edgeadmin:latest",
       "IsDefault": false
+    },
+    {
+      "DockerImageName": "registry.fly.io/edgeadmin:admin",
+      "IsDefault": false
     }
   ],
   "MachineCreateConfigs": [
