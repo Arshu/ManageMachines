@@ -12,7 +12,7 @@
         }
     }
 
-    function flyDeployApp(progressElmId, responseElmId, orgSlugVal, appNameVal, regionVal, dockerImageVal, machineConfigVal, actionElmId, successCallback) {
+    function flyDeployApp(progressElmId, responseElmId, orgSlugVal, appNameVal, regionListVal, dockerImageVal, machineConfigVal, actionElmId, successCallback) {
 
         var id = window.ajaxid++;
         var responseElm = getElm(responseElmId);
@@ -22,7 +22,7 @@
         var valid = true;
 
         getElm(actionElmId).setAttribute('disabled', true);
-       
+
         if (valid == true) {
             if (appNameVal.trim().length === 0) {
                 showText(responseElm, 'Enter Unique App Name', 'red');
@@ -40,7 +40,7 @@
                     "fly_api_token": '',
                     "org_slug": orgSlugVal,
                     "app_name": appNameVal,
-                    "region": regionVal,
+                    "regionlist": regionListVal,
                     "dockerImage": dockerImageVal,
                     "machineConfig": machineConfigVal
                 }, "id": id
@@ -59,7 +59,7 @@
                         }
                         else if (result.hasOwnProperty('message') === true) {
                             showText(responseElm, result.message, 'green');
-                            showElm(responseContainerElmId);  
+                            showElm(responseContainerElmId);
                             triggerEvent('flyAppRefreshBtn', 'click');
                         }
                     }
@@ -173,19 +173,22 @@
         <div id="flyResponse"></div>
     </div>
 
-    <label style="width:100%;margin: 5px auto;">Deploy Edge Apps to any Edge Region</label>
+    <label style="width:100%;margin: 5px auto;">Deploy Edge Apps to Multiple Edge Region</label>
     <div class="flex-content-wrap">
         <div class="flex-item-stretch border-left" style="height: 40px;">
             <input style="width:100%;border:none;border-right:dashed;" id="flyAppName" type="text" placeholder="App Name" maxlength="15" />
         </div>
-        <button style="height:40px; width: 40px; text-align:center;" class="border-top-bottom" id="openAppBtn" onclick="flyLaunchAppName('flyResponse', getElm('flyAppName').value)">
+        <button style="height:40px; width: 40px; text-align:center;" class="border-ri" id="openAppBtn" onclick="flyLaunchAppName('flyResponse', getElm('flyAppName').value)">
             <svg xmlns="http://www.w3.org/2000/svg" style="width:40px;height:40px;" viewBox="0 0 20 20" fill="currentColor">
                 <path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z" />
                 <path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z" />
             </svg>
         </button>
-        <div class="flex-item-stretch border-right" style="height: 40px;">
-            <select id="flyRegions" style="width:100%;border:none;margin: 0 0 0 5px;">
+    </div>
+
+    <div class="flex-content-wrap">
+        <div class="flex-item-stretch" style="height: 50px;border: solid 1px black; border-radius:5px;">
+            <select id="flyRegions" style="width:100%;border:none;margin: 0 0 0 5px;height:50px" multiple>
                 {{@FlyRegions}}
                 <option style="padding: 0px 0px 5px 0px;" {{@IsDefault}} selected="selected" {{/IsDefault}} value="{{$RegionCode}}">{{$RegionName}}</option>
                 {{/FlyRegions}}
@@ -223,7 +226,7 @@
         </button>
     </div>
 
-    <label style="width:100%;margin: 5px auto;font-size:xx-small;color:red;">All 15 Min Old App's will be deleted</label>
+    <label style="width:100%;margin: 5px auto;font-size:xx-small;color:red;">All 5 Min Old App's may be deleted</label>
     <div class="flex-content-wrap">
         <button class="border-right createbtn btn px-3 pt-1" style="width:150px;height:40px;" id="deleteAllAppBtn"
                 onclick="flyDeleteAllApp('flyDeleteAllAppProgress', 'flyResponse', getElm('flyOrgSlug').value, 'deleteAllAppBtn')">

@@ -309,12 +309,12 @@
         }
     }
 
-    function flyResetMachineList() {
-        refreshFlyMachineList('refreshFlyMachineListProgress', 1, true);
+    function flyResetMachineList(progressElmId) {
+        refreshFlyMachineList(progressElmId, 1, true);
         setMachineAction();
     }
 
-    function flyCreateMachine(progressElmId, responseElmId, authTokenVal, appNameVal, regionVal, machineNameVal, dockerImageVal, machineConfigVal, envScopeElmId, successCallback) {
+    function flyCreateMachine(progressElmId, responseElmId, authTokenVal, appNameVal, regionListVal, machineNameVal, dockerImageVal, machineConfigVal, envScopeElmId, successCallback) {
 
         var id = window.ajaxid++;
         var responseElm = getElm(responseElmId);
@@ -331,7 +331,7 @@
         }
 
         if (valid == true) {
-            if (regionVal.trim().length === 0) {
+            if (regionListVal.trim().length === 0) {
                 showText(responseElm, 'Select Machine Region', 'red');
                 valid = false;
             }
@@ -374,7 +374,7 @@
                 "jsonrpc": '2.0', "method": 'CreateMachine', "params": {
                     "fly_api_token": authTokenVal,
                     "app_name": appNameVal,
-                    "region": regionVal,
+                    "regionlist": regionListVal,
                     "machineName": machineNameVal,
                     "dockerImage": dockerImageVal,
                     "machineConfig": machineConfigVal,
@@ -1241,8 +1241,6 @@
             </div>
         </div>
 
-        {{FlyEnv("FlyEnvScopeID":"FlyEnv1","FlyEnvID":"1")}}
-
         <div class="flex-content-wrap">
             <label style="width:100%;margin: 5px auto;">Machine Image*</label>
             <div class="flex-item-stretch border" style="height: 40px;">
@@ -1267,6 +1265,8 @@
             </div>
 
         </div>
+
+        {{FlyEnv("FlyEnvScopeID":"FlyEnv1","FlyEnvID":"1")}}
 
         <div class="flex-content-wrap">
             <button class="border" style="width:80px;height:40px;background-color:lightgray;"
@@ -1300,8 +1300,6 @@
         </svg>
     </div>
 
-    {{FlyEnv("FlyEnvScopeID":"FlyEnv2", "FlyEnvID":"2")}}
-
     <div class="flex-content-wrap">
         <label style="width:100%;margin: 5px auto;">Machine Image*</label>
         <div class="flex-item-stretch border" style="height: 40px;">
@@ -1327,6 +1325,9 @@
             </select>
         </div>
     </div>
+
+    {{FlyEnv("FlyEnvScopeID":"FlyEnv2", "FlyEnvID":"2")}}
+
     <div class="flex-content-wrap">
         <button class="border" style="width:100px;height:40px;background-color:lightgray;"
                 onclick="flyUpdateMachine('flyUpdateMachineProgress', 'flyUpdateMachineResponse', getElm('flyAuthToken').value, getElm('flyAppSelect').value, getElm('flyUpdateDockerImages').value, getElm('flyMachineUpdateConfigs').value, getElm('flyVMSizes').value, getElm('flyVMMemory').value, 'FlyEnv2', function () { })">

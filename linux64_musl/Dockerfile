@@ -1,8 +1,9 @@
 #Alpine x64
+FROM loadimpact/k6:latest AS k6official
+
 FROM mcr.microsoft.com/dotnet/runtime-deps:6.0.6-alpine3.16-amd64 as initial
 
 WORKDIR /app
-
 COPY . .
 RUN chmod +x ./AppWeb.Machine
 
@@ -14,8 +15,14 @@ RUN curl -L https://fly.io/install.sh | sh
 
 FROM mcr.microsoft.com/dotnet/runtime-deps:6.0.6-alpine3.16-amd64
 WORKDIR /app
+
+#RUN addgroup --system --gid 101 app \
+#    && adduser --system --ingroup app --uid 101 app
+#USER app
+#COPY --from=initial --chown=app:app /app /app
 COPY --from=initial /app /app
 COPY --from=initial /root/.fly /root/.fly
+COPY --from=k6official /usr/bin/k6 /usr/bin/k6
 
 ENV FLYCTL_INSTALL="/root/.fly"
 ENV PATH="$FLYCTL_INSTALL/bin:$PATH"

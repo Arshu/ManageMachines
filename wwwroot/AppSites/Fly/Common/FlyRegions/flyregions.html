@@ -103,13 +103,13 @@
 
 <div class="flex-content-wrap">
     <label style="width:100%;margin: 5px auto;">Fly Regions*</label>
-    <button class="border-left" style="width:70px;height:40px;background-color:lightgray;"
+    <button class="border-left" style="width:70px;height:80px;background-color:lightgray;"
             onclick="flyResetAppList(); flyRefreshRegionList('retrieveRegionProgress', 'flyCreateMachineResponse', getElm('flyAuthToken').value, 'flyRegions')">
         Retrieve
         <div id="retrieveRegionProgress"></div>
     </button>
-    <div class="flex-item-stretch border-right" style="height: 40px;">
-        <select id="flyRegions" style="width:100%;border:none;padding:0 0 0 5px;">
+    <div class="flex-item-stretch border-right" style="height: 80px;">
+        <select id="flyRegions" style="width: 100%; border: none; padding: 0 0 0 5px; height: 80px;" multiple>
             {{@FlyRegions}}
             <option {{@IsDefault}} selected="selected" {{/IsDefault}} value="{{$RegionCode}}">{{$RegionName}}</option>
             {{/FlyRegions}}
