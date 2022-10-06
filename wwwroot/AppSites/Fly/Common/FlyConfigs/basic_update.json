@@ -23,6 +23,7 @@
             ]
           },
           {
+            "force_https": true,
             "port": 80,
             "handlers": [
               "http"

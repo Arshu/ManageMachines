@@ -15,7 +15,7 @@
       "memory_mb": 256
     },
     "services": [
-      {
+      {        
         "ports": [
           {
             "port": 443,
@@ -25,6 +25,7 @@
             ]
           },
           {
+            "force_https": true,
             "port": 80,
             "handlers": [
               "http"

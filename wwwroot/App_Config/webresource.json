@@ -93,8 +93,8 @@
             "arshujsoneditor.min.js" : "Resource\\Arshu\\app\\js\\arshujsoneditor.min.js",            
             "arshurpc.min.js" : "Resource\\Arshu\\app\\js\\arshurpc.min.js",            
             "signalr.min.js" : "Resource\\Arshu\\signalr\\signalr.min.js",            
-            "main.min.js" : "Resource\\app\\js\\main.min.js",            
-            "highlight.pack.js" : "Resource\\Arshu\\highlight\\highlight.pack.js"
+            "highlight.pack.js" : "Resource\\Arshu\\highlight\\highlight.pack.js",            
+            "main.min.js" : "Resource\\app\\js\\main.min.js"
         },        
         "J2@" : 
         {
@@ -106,10 +106,10 @@
             "arshulayout.min.css" : "Resource\\Arshu\\app\\css\\arshulayout.min.css",            
             "normalize.min.css" : "Resource\\Arshu\\app\\css\\normalize.min.css",            
             "animate.min.css" : "Resource\\Arshu\\animation\\animate.min.css",            
-            "main.min.css" : "Resource\\app\\css\\main.min.css",            
             "highlight.min.css" : "Resource\\Arshu\\highlight\\highlight.min.css",            
             "bootstrap.min.css" : "Resource\\bootstrap\\bootstrap.min.css",            
-            "style.min.css" : "Resource\\Css\\style.min.css"
+            "style.min.css" : "Resource\\Css\\style.min.css",            
+            "main.min.css" : "Resource\\app\\css\\main.min.css"
         }
     },    
     "ResourceNearCDNMap" : 

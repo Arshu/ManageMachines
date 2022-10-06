@@ -2,6 +2,8 @@
 FROM loadimpact/k6:latest AS k6official
 
 FROM mcr.microsoft.com/dotnet/runtime-deps:6.0.6-alpine3.16-amd64 as initial
+#RUN apk add bash icu-libs krb5-libs libgcc libintl libssl1.1 libstdc++ zlib #if using base alpine above 3.9
+#RUN apk add libgdiplus --repository https://dl-3.alpinelinux.org/alpine/edge/testing/ #optional
 
 WORKDIR /app
 COPY . .

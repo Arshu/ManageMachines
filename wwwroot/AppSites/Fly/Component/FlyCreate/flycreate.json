@@ -121,11 +121,11 @@
   ],
   "DockerImages": [
     {
-      "DockerImageName": "arshucs/edgeapp:latest",
+      "DockerImageName": "registry.fly.io/edgeapp:latest",
       "IsDefault": true
     },
     {
-      "DockerImageName": "arshucs/appweb:latest",
+      "DockerImageName": "registry.fly.io/appweb:latest",
       "IsDefault": false
     }
   ],

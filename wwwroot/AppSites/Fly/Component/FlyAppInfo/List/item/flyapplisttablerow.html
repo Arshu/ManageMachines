@@ -4,7 +4,12 @@
         {{$name}}
     </td>
     <td>
-        <a href="https://{{$AppName}}.fly.dev" target="_blank">{{$config_image}}</a>
+        {{@HaveIp}}
+            <a href="https://{{$app_name}}.fly.dev" target="_blank">{{$config_image}}</a>
+        {{/HaveIp}}
+        {{^HaveIp}}
+            <div>{{$config_image}}</div>
+        {{/HaveIp}}
     </td>
 </tr>
 <tr style="text-align: center;">

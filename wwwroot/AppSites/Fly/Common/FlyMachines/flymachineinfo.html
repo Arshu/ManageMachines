@@ -24,18 +24,14 @@
 </div>
 
 <div style="{{$FlyMachineListStyle}}" id="flyMachineList">
-    {{
-        VIEW_FlyMachineList("FlyMachineList",
-            "htmlTableEmpty":"FlyMachineListEmpty",
-            "htmlTable":"FlyMachineListTable",
-            "htmlTableBody":"FlyMachineListTableBody",
-            "htmlTableRow":"FlyMachineListTableRow",
-            "htmlTableHeader":"FlyMachineListTableHeader",
-            "htmlTableFooter":"FlyMachineListTableFooter",
-            "filterKey" :"",
-            "filterValue":"",
-            "pageNo": "1",
-            "itemsPerPage":"10"
-        )
-    }}
+    <div class="flex-content-wrap">
+        <div class="flex-item-stretch border-left ">
+            Refresh to Get Machine List
+        </div>
+        <button class="border-right" style="width:40px;height:43px;text-align:right;" id="flyMachineRefreshBtn"
+                onclick="refreshFlyMachineList('refreshFlyMachineListProgress', 1)">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+            <div id="refreshFlyMachineListProgress"></div>
+        </button>
+    </div>
 </div>
