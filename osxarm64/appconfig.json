@@ -7,17 +7,15 @@
   "AllowReload": true,
   "AllowConfigReload": true,
   "AllowConfigUpdate": true,
+
   "InitialTimeInSec": 30,
   "IdleTimeInSec": 30,
   "ContextJson": {
     "PageTitle": "Edge App",
     "ShowIntroTip": true,
+    "ShowAppSiteTest": false,
     "EnableArshuFramework": true,
-    "FlyAppName": "edgeapp",
-    "FlyApiToken": "",
-    "FlyLoginRoles": "Guest",
-    "FlyLogoutRoles": "Guest",
-    "FlyRetrieveTokenRoles": "Guest"
+    "FlyAppName": "edgeapp"
   },
   "WSClientHeartBeatTimeInMs": 15000,
   "WSServerHeartBeatTimeInMs": 5000,
@@ -105,7 +103,7 @@
   "PackData": true,
   "PackAppFolder": false,
   "PackTemplate": false,
-  "PackAppSites": "Index, Account, Config, Fly, Test",
+  "PackAppSites": "Index, Account, Config, Test, Fly",
   "PackAppDatas": "Roles, Members",
 
   "PackName": "AppWeb.Web.1.0.pap",
