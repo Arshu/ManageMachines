@@ -114,6 +114,7 @@
                 "jsonrpc": '2.0', "method": 'DeleteAllApps', "params": {
                     "fly_api_token": '',
                     "org_slug": orgSlugVal,
+                    "app_name": '',
                 }, "id": id
             };
 
@@ -215,9 +216,9 @@
     <div class="flex-content-wrap">
         <div class="flex-item-stretch border-left" style="height: 40px;">
             <select id="dockerImages" style="width: 100%; border: none; padding: 0 0 0 5px;">
-                {{@DockerImages}}
+                {{@CreateDockerImages}}
                 <option {{@IsDefault}} selected="selected" {{/IsDefault}}>{{$DockerImageName}}</option>
-                {{/DockerImages}}
+                {{/CreateDockerImages}}
             </select>
         </div>
         <button class="border-right createbtn btn px-3 pt-1" style="width:80px;height:40px;" id="createAppBtn"

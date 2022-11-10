@@ -4,9 +4,9 @@
     <div class="flex-item-stretch border" style="height: 40px;">
         <select id="flyVMMemory" style="width: 100%; border: none; padding: 0 0 0 5px;">
             {{@FlyVMMemory}}
-            {{@IsVisible}}
-            <option {{@IsDefault}} selected="selected" {{/IsDefault}}>{{$FlyVMMemory}}</option>
-            {{/IsVisible}}
+                {{@IsVisible}}
+                    <option {{@IsDefault}} selected="selected" {{/IsDefault}}>{{$VMMemory}}</option>
+                {{/IsVisible}}
             {{/FlyVMMemory}}
         </select>
     </div>

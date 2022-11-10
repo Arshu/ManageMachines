@@ -1,0 +1,20 @@
+{
+    "RemoteUrl" : "",    
+    "RemoteUserId" : null,    
+    "RemoteUserPwd" : null,    
+    "ViewPathConfig" : 
+    {
+        "InitViewPath" : "/Account/Login",        
+        "StartViewPath" : "/Index/Main",        
+        "LoginViewPath" : "/Account/Login",        
+        "LoginAfterViewPath" : "/Fly/Main",        
+        "ChangePasswordViewPath" : "/Account/ChangePassword"
+    },    
+    "AllowAppShutdown" : false,    
+    "MaskConfigValue" : false,    
+    "AppDomainPrefix" : "www",    
+    "AssetOutputFolderName" : "Assets",    
+    "IndexHtmlFileName" : "index.html",    
+    "SwitchAppDomainRoles" : "Admin",    
+    "SwitchAppDomainRolesForLocalHost" : "Admin"
+}

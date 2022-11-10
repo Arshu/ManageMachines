@@ -1,0 +1,40 @@
+{
+  "NAVList": [    
+  ],
+  "NAVAccountList": [
+    {
+      "NavTitle": "LogOff ({{$LOGINALIAS}})",
+      "NavUrl": "#",
+      "NavAppSite": "",
+      "NavAppView": "",
+      "NavAppViewIDs": "",
+      "NavActive": "logoff"
+    }
+  ],
+  "NAVListSchema": {
+    "NavTitle": "Index",
+    "NavUrl": "#/Index/Main",
+    "NavAppSite": "Index",
+    "NavAppView": "Main",
+    "NavAppViewIDs": "mainContent, mainNav, mainFooter",
+    "NavActive": "",
+    "HaveSubMenu": false,
+    "SubNAVList": []
+  },
+  "SubNAVListSchema": {
+    "NavTitle": "Index",
+    "NavUrl": "#/Index/Main",
+    "NavAppSite": "Index",
+    "NavAppView": "Main",
+    "NavAppViewIDs": "mainContent, mainNav, mainFooter",
+    "NavActive": ""
+  },
+  "NAVAccountListSchema": {
+    "NavTitle": "Index",
+    "NavUrl": "#/Index/Main",
+    "NavAppSite": "Index",
+    "NavAppView": "Main",
+    "NavAppViewIDs": "mainContent, mainNav, mainFooter",
+    "NavActive": ""
+  }
+}

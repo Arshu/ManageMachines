@@ -1,0 +1,24 @@
+{
+    "BackupAppName" : [
+        
+        {
+            "AppName" : "arshuimages",            
+            "IsDefault" : true
+        },
+        {
+            "AppName" : "atdxtimages",            
+            "IsDefault" : false
+        }
+    ],    
+    "RestoreImages" : [
+        
+        {
+            "ImageName" : "registry.fly.io/arshuimages:{$FlyAppName}",            
+            "IsDefault" : true
+        },
+        {
+            "ImageName" : "registry.fly.io/{$FlyAppName}:latest",            
+            "IsDefault" : false
+        }
+    ]
+}

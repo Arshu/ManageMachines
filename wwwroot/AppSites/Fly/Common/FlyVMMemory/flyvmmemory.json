@@ -2,20 +2,19 @@
   "DefaultFlyVMMemory": "256MB",
   "FlyVMMemory": [
     {
-      "FlyVMMemory": "256MB",
+      "VMMemory": "256MB",
       "IsDefault": true,
       "IsVisible": true
     },
     {
-      "FlyVMMemory": "512MB",
+      "VMMemory": "512MB",
       "IsDefault": false,
       "IsVisible": true
     },
     {
-      "FlyVMMemory": "1024MB",
+      "VMMemory": "1024MB",
       "IsDefault": false,
       "IsVisible": false
     }
   ]
-
 }

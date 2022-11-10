@@ -142,12 +142,12 @@
 <div class="flex-content-wrap">
     <label style="width:100%;margin: 5px auto;">Fly Apps</label>
     <button class="border-left" style="width:70px;height:40px"
-            onclick="flyRefreshAppList('refreshFlyAppListProgress', 'flyResponse', getElm('flyAuthToken').value, getElm('flyOrgSlug').value, 'flyAppSelect', function () { flyResetMachineList('refreshFlyAppListProgress'); })">
+            onclick="flyRefreshAppList('refreshFlyAppListProgress', 'flyResponse', getElm('flyAuthToken').value, getElm('flyOrgSlug').value, 'flyAppSelect', function () { clearAllMachineResponse(); flyResetMachineList('refreshFlyAppListProgress'); })">
         Retrieve
         <div id="refreshFlyAppListProgress"></div>
     </button>
     <div class="flex-item-stretch border-top-bottom" style="height: 40px;">
-        <select id="flyAppSelect" style="width: 100%; border: none; padding: 0 0 0 5px;" onchange="flyResetMachineList('refreshFlyAppListProgress'); flySetAppName(getElm('flyAppSelect').value);">
+        <select id="flyAppSelect" style="width: 100%; border: none; padding: 0 0 0 5px;" onchange="flyResetMachineList('refreshFlyAppListProgress'); flySetAppName(getElm('flyAppSelect').value); clearAllMachineResponse();hideElm('createFlyMachinesDiv');hideElm('updateFlyMachinesDiv'); ">
             {{@FlyApps}}
             <option {{@IsDefault}} selected="selected" {{/IsDefault}}>{{$FlyAppName}}</option>
             {{/FlyApps}}

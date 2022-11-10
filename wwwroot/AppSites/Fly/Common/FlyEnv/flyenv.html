@@ -9,21 +9,18 @@
         </svg>
     </div>
 
-    <div id="enviornmentVariable">
-
-        <div class="flex-content-wrap">
-            <label style="width:100%;margin: 5px auto;">Fly Initial Time Before Idle Timer Start</label>
-            <div class="flex-item-stretch border" style="height: 40px;">
-                <input style="width:100%;border:none;" id="flyInitialTime{{$FlyEnvID}}" data-message="Fly Initial Time Before Idle is required" data-check="required" data-key="INITIAL_TIME_IN_SEC" type="number" placeholder="Optional Fly Initial Time in Sec" value="" />
-            </div>
+    <div class="flex-content-wrap">
+        <label style="width:100%;margin: 5px auto;">Fly Initial Time Before Idle Timer Start</label>
+        <div class="flex-item-stretch border" style="height: 40px;">
+            <input style="width:100%;border:none;" id="flyInitialTime{{$FlyEnvID}}" data-message="Fly Initial Time Before Idle is required" data-check="required" data-key="INITIAL_TIME_IN_SEC" type="number" placeholder="Optional Fly Initial Time in Sec" value="" />
         </div>
-
-        <div class="flex-content-wrap">
-            <label style="width:100%;margin: 5px auto;">Fly Idle Time</label>
-            <div class="flex-item-stretch border" style="height: 40px;">
-                <input style="width:100%;border:none;" id="flyIdleTime{{$FlyEnvID}}" data-message="Fly Idle Time is required" data-check="required" data-key="IDLE_TIME_IN_SEC" type="number" placeholder="Optional Fly Idle Time in Sec" value="" />
-            </div>
-        </div>
-
     </div>
+
+    <div class="flex-content-wrap">
+        <label style="width:100%;margin: 5px auto;">Fly Idle Time</label>
+        <div class="flex-item-stretch border" style="height: 40px;">
+            <input style="width:100%;border:none;" id="flyIdleTime{{$FlyEnvID}}" data-message="Fly Idle Time is required" data-check="required" data-key="IDLE_TIME_IN_SEC" type="number" placeholder="Optional Fly Idle Time in Sec" value="" />
+        </div>
+    </div>
+
 </div>

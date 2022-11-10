@@ -14,6 +14,11 @@
     },
     "services": [
       {
+        "concurrency": {
+          "hard_limit": 25,
+          "soft_limit": 20,
+          "type": "connections"
+        },
         "ports": [
           {
             "port": 443,

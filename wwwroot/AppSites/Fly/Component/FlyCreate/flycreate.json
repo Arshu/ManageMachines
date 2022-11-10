@@ -7,6 +7,22 @@
       "IsDefault": true
     }
   ],
+  "CreateDockerImages": [
+    {
+      "DockerImageName": "registry.fly.io/arshuimages:edgeapp",
+      "IsDefault": true
+    },
+    {
+      "DockerImageName": "registry.fly.io/arshuimages:appweb",
+      "IsDefault": false
+    }
+  ],
+  "MachineCreateConfigs": [
+    {
+      "ConfigName": "Basic Create Template",
+      "ConfigPath": "basic_create"
+    }
+  ],
   "FlyRegions": [
     {
       "RegionCode": "ams",
@@ -117,22 +133,6 @@
       "RegionCode": "yyz",
       "RegionName": "Toronto, Canada",
       "IsDefault": false
-    }
-  ],
-  "DockerImages": [
-    {
-      "DockerImageName": "registry.fly.io/edgeapp:latest",
-      "IsDefault": true
-    },
-    {
-      "DockerImageName": "registry.fly.io/appweb:latest",
-      "IsDefault": false
-    }
-  ],
-  "MachineCreateConfigs": [
-    {
-      "ConfigName": "Basic Create Template",
-      "ConfigPath": "basic_create"
     }
   ]
 }

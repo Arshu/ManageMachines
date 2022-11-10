@@ -1,7 +1,7 @@
 
 <script>
 
-    function flyRefreshConfigList(progressElmId, responseElmId, successCallback) {
+    function flyRefreshConfigList(progressElmId, responseElmId, appNameVal, successCallback) {
 
         var id = window.ajaxid++;
         var responseElm = getElm(responseElmId);
@@ -54,9 +54,21 @@
                                                 }
                                                 if (key == "IsSelected") {
                                                     isSelected = jsonSelect[key];
+                                                }                                                
+                                            }
+                                            if ((appNameVal.length > 0) && (configKey.toUpperCase().indexOf("docker".toUpperCase()) > -1)) {
+                                                isSelected = false;
+                                                if (selectValue.toUpperCase().indexOf(appNameVal.toUpperCase()) > -1) {
+                                                    isSelected = true;
+                                                }
+                                                if (selectText.toUpperCase().indexOf(appNameVal.toUpperCase()) > -1) {
+                                                    isSelected = true;
                                                 }
                                             }
-                                            selectElm.options[selectElm.options.length] = new Option(selectText, selectValue, isSelected);;
+                                            selectElm.options[selectElm.options.length] = new Option(selectText, selectValue, isSelected);
+                                            if (isSelected == true) {
+                                                selectElm.selectedIndex = i;
+                                            }
                                         }
                                     }
                                 }
@@ -410,6 +422,7 @@
     function flyResetMachineList(progressElmId) {
         refreshFlyMachineList(progressElmId, 1, true);
         setMachineAction();
+        clearAllMachineResponse();
     }
 
     function flyCreateMachine(progressElmId, responseElmId, authTokenVal, appNameVal, regionListVal, machineNameVal, dockerImageVal, machineConfigVal, envScopeElmId, successCallback) {
@@ -722,6 +735,8 @@
 
                         if (result.hasOwnProperty('message') === true) {
                             showText(responseElm, result.message, 'green');
+
+                            refreshFlyMachineList('refreshFlyMachineListProgress', 1);
 
                             if (typeof successCallback === "function") {
                                 successCallback();
@@ -1180,95 +1195,10 @@
                 });
         }
     }
-
-    function flyGetMachineInfo(progressElmId, responseElmId, authTokenVal, appNameVal, machineIdVal, targetElmId, successCallback) {
-
-        var id = window.ajaxid++;
-        var responseElm = getElm(responseElmId);
-        var responseContainerElmId = responseElmId + "Container";
-        responseElm.textContent = '';
-        hideElm(responseContainerElmId);
-        var valid = true;
-
-        if (valid == true) {
-            if (appNameVal.trim().length === 0) {
-                showText(responseElm, 'Enter App Name', 'red');
-                valid = false;
-            }
-        }
-
-        if (valid == true) {
-            if (machineIdVal.trim().length === 0) {
-                showText(responseElm, 'Select Machine Id', 'red');
-                valid = false;
-            }
-        }
-
-        if (valid === true) {
-
-            let url = '/AppApi/FlyApi';
-            let urlMethod = 'POST';
-            let urlContent = {
-                "jsonrpc": '2.0', "method": 'GetMachineInfo', "params": {
-                    "fly_api_token": authTokenVal,
-                    "app_name": appNameVal,
-                    "machine_id": machineIdVal,
-                }, "id": id
-            };
-
-            dopost(progressElmId, responseElmId, url, urlContent,
-                function (data) {
-                    if (data.hasOwnProperty('Result') === true) {
-                        var result = data.Result;
-
-                        if (result.hasOwnProperty('html') === true) {
-                            var rootNode = getElm(targetElmId);
-                            rootNode.innerHTML = result.html;
-                            showElm(targetElmId);
-
-                            if (typeof successCallback === "function") {
-                                successCallback();
-                            }
-                        }
-                        else if (result.hasOwnProperty('message') === true) {
-                            showText(responseElm, result.message, 'green');
-
-                            if (typeof successCallback === "function") {
-                                successCallback();
-                            }
-                        }
-                        else if (result.hasOwnProperty('error') === true) {
-                            showText(responseElm, result.error, 'red');
-                        }
-                    }
-                    else if ((data.hasOwnProperty('Error') === true) && (data.Error)) {
-                        var error = data.Error;
-                        if (error.hasOwnProperty('Message') === true) {
-                            showText(responseElm, error.Message, 'red');
-                        }
-                    }
-                },
-                function (data) {
-                    if ((data.hasOwnProperty('Error') === true) && (data.Error)) {
-                        var result = data.Error;
-                        if (result.hasOwnProperty('Message') === true) {
-                            showText(responseElm, result.Message, 'red');
-                        }
-                    }
-                    else if (data.hasOwnProperty('Result') === true) {
-                        var result = data.Result;
-                        if (result.hasOwnProperty('error') === true) {
-                            showText(responseElm, result.error, 'red');
-                        }
-                    }
-                });
-        }
-    }
-
+  
     function setMachineAction() {
 
         getElm('updateMachine').setAttribute("disabled", true);
-        getElm('getMachineInfo').setAttribute("disabled", true);
         getElm('startMachine').setAttribute("disabled", true);
         getElm('stopMachine').setAttribute("disabled", true);
         getElm('deleteMachine').setAttribute("disabled", true);
@@ -1295,7 +1225,6 @@
             getElm('flyMachineId').value = machineIdVal;
 
             getElm('updateMachine').removeAttribute("disabled");
-            getElm('getMachineInfo').removeAttribute("disabled");
 
             if (machineStatusVal == "created") {
                 getElm('startMachine').removeAttribute("disabled");
@@ -1314,11 +1243,24 @@
         }
     }
 
+    function clearResponse(responseElmId) {
+        var responseElm = getElm(responseElmId);
+        var responseContainerElmId = responseElmId + "Container";
+        responseElm.textContent = '';
+        hideElm(responseContainerElmId);
+    }
+
+    function clearAllMachineResponse() {
+        clearResponse('flyCreateMachineResponse');
+        clearResponse('flyUpdateMachineResponse');
+        clearResponse('flyMachineResponse');
+    }
+
 </script>
 
 <div class="flex-card card_border" id="createFlyMachinesDiv">
 
-    <div class="flex-content-wrap" style="margin: 5px 5px;width:100%;min-height:0px;" onclick="toggleElm('manageFlyMachines'); toggleElm('flyMachineOpen'); toggleElm('flyMachineClose'); flyRefreshConfigList('flyCreateConfigProgress', 'flyCreateMachineResponse');">
+    <div class="flex-content-wrap" style="margin: 5px 5px;width:100%;min-height:0px;" onclick="clearAllMachineResponse();toggleElm('manageFlyMachines'); toggleElm('flyMachineOpen'); toggleElm('flyMachineClose'); flyRefreshConfigList('flyCreateConfigProgress', 'flyCreateMachineResponse', getElm('flyAppSelect').value);">
         <div class="flex-item-stretch" style="text-align:center;">
             <strong>Create Fly Machines</strong><div id="flyCreateConfigProgress"></div>
         </div>
@@ -1366,7 +1308,7 @@
             </button>
 
             <button class="border" style="width:160px;height:40px;margin-left:10px; background-color:lightgray;"
-                    onclick="flyCreateDestroyMachine('flyCreateDestroyMachineProgress', 'flyCreateMachineResponse', getElm('flyAuthToken').value, getElm('flyAppSelect').value, getElm('flyRegions').value, getElm('flyMachineName').value, getElm('flyDockerImages').value, getElm('flyMachineCreateConfigs').value, 'FlyEnv1', function () { })">
+                    onclick="flyCreateDestroyMachine('flyCreateDestroyMachineProgress', 'flyCreateMachineResponse', getElm('flyAuthToken').value, getElm('flyAppSelect').value, getElm('flyRegions').value, getElm('flyMachineName').value, getElm('flyCreateDockerImages').value, getElm('flyMachineCreateConfigs').value, 'FlyEnv1', function () { })">
                 Create And Destroy <div id="flyCreateDestroyMachineProgress"></div>
             </button>
         </div>
@@ -1382,7 +1324,7 @@
 
 <div class="flex-card card_border" id="updateFlyMachinesDiv" style="display:none;">
 
-    <div class="flex-content-wrap" style="margin: 5px 5px;width:100%;min-height:0px;" onclick="toggleElm('createFlyMachinesDiv');toggleElm('updateFlyMachinesDiv');flyRefreshConfigList('flyUpdateConfigProgress', 'flyUpdateMachineResponse');">
+    <div class="flex-content-wrap" style="margin: 5px 5px;width:100%;min-height:0px;" onclick="clearAllMachineResponse();toggleElm('createFlyMachinesDiv');toggleElm('updateFlyMachinesDiv');flyRefreshConfigList('flyUpdateConfigProgress', 'flyUpdateMachineResponse', getElm('flyAppSelect').value);">
         <div class="flex-item-stretch" style="text-align:center;">
             <strong>Update Fly Machines</strong><div id="flyUpdateConfigProgress"></div>
         </div>
@@ -1415,7 +1357,7 @@
 
     <div class="flex-content-wrap">
         <button class="border" style="width:100px;height:40px;background-color:lightgray;"
-                onclick="flyUpdateMachine('flyUpdateMachineProgress', 'flyUpdateMachineResponse', getElm('flyAuthToken').value, getElm('flyAppSelect').value, getElm('flyUpdateDockerImages').value, getElm('flyMachineUpdateConfigs').value, getElm('flyVMSizes').value, getElm('flyVMMemory').value, 'FlyEnv2', function () { })">
+                onclick="flyUpdateMachine('flyUpdateMachineProgress', 'flyUpdateMachineResponse', getElm('flyAuthToken').value, getElm('flyAppSelect').value, getElm('flyUpdateDockerImages').value, getElm('flyMachineUpdateConfigs').value, getElm('flyVMSizes').value, getElm('flyVMMemory').value, 'FlyEnv2', function () { toggleElm('createFlyMachinesDiv');toggleElm('updateFlyMachinesDiv'); })">
             Update <div id="flyUpdateMachineProgress"></div>
         </button>
     </div>
@@ -1445,12 +1387,8 @@
 
     <div class="flex-content-wrap" style="width:100%;text-align: center;margin: 10px 0px;">
         <button class="button border" id="updateMachine" style="margin: 0 5px 5px 0; min-width: 75px; height: 40px; background-color: lightgray; color: black; font-weight: bolder;" disabled="disabled"
-                onclick="flyRefreshConfigList('flyCreateConfigProgress', 'flyCreateMachineResponse', function () { toggleElm('updateFlyMachinesDiv'); toggleElm('createFlyMachinesDiv'); })">
+                onclick="clearAllMachineResponse();flyRefreshConfigList('flyCreateConfigProgress', 'flyCreateMachineResponse', getElm('flyAppSelect').value, function () { toggleElm('updateFlyMachinesDiv'); toggleElm('createFlyMachinesDiv'); })">
             Update
-        </button>
-        <button class="button border" id="getMachineInfo" style="margin: 0 5px 5px 0; min-width: 75px; height: 40px; background-color: lightgray; color: black; font-weight: bolder;" disabled="disabled"
-                onclick="if (isDisplayNoneElm(getElm('machineInfoDiv')) == true) { flyGetMachineInfo('flyGetMachineInfoProgress', 'flyMachineResponse', getElm('flyAuthToken').value, getElm('flyAppSelect').value, getElm('flyMachineId').value, 'machineInfoDiv', function () { }); } else { hideElm('machineInfoDiv'); }">
-            GetInfo <div id="flyGetMachineInfoProgress"></div>
         </button>
         <button class="button border" id="startMachine" style="margin: 0 5px 5px 0; min-width: 75px; height: 40px; background-color: lightgray; color: black; font-weight: bolder;" disabled="disabled"
                 onclick="flyStartMachine('flyStartMachineProgress', 'flyMachineResponse', getElm('flyAuthToken').value, getElm('flyAppSelect').value, function () { setMachineAction(); })">

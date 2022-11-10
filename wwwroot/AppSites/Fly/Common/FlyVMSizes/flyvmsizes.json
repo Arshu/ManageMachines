@@ -10,6 +10,13 @@
     },
     {
       "VMCPU": "1",
+      "VMRAM": "256",
+      "VMName": "shared-cpu-2x",
+      "IsDefault": false,
+      "IsVisible": true
+    },
+    {
+      "VMCPU": "1",
       "VMRAM": "2096",
       "VMName": "dedicated-cpu-1x",
       "IsDefault": false,

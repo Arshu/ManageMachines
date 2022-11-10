@@ -15,6 +15,11 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                     <li class="nav-item">
+                        <div class="nav-link curv btn px-3 pt-1 m-1" onclick="showMachineImageViewer('showMachineImageProgress')">
+                            Manage Image <div id="showMachineImageProgress"></div>
+                        </div>
+                    </li>
+                    <li class="nav-item">
                         <a href="/Fly/Main" class="nav-link curv btn px-3 pt-1 m-1">Manage Machines</a>
                     </li>
                     <li class="nav-item">
@@ -43,11 +48,11 @@
         <div class="col-md-6">
             <p class="text-secondary my-4 my-lg-5">
                 Create your MicroVM in fly.io in any supported edge region and Sync your edge app from Git.<br />
-                The MicroVM will auto shutdown on ~30seconds idle /auto start on request within ~2-3seconds <br />
+                The MicroVM will auto shutdown on ~25seconds idle /auto start on request within ~2-3seconds <br />
                 Fly.io will only <strong>charge when the microvm runs!!!</strong>
             </p>
             <p class="text-secondary my-4 my-lg-5">
-                EdgeAdmin Portable App is available in <a href="https://github.com/Arshu/MachineManager">Arshu/MachineManager</a> GitHub<br />
+                EdgeAdmin Portable App is available in <a href=" https://github.com/Arshu/ManageMachines">Arshu/ManageMachines</a> GitHub<br />
                 Edge App Docker Image <a href="https://hub.docker.com/r/arshucs/edgeapp">arshucs/edgeapp</a> <br />
                 <span style="color:red;">(All Deployed MicroVM may be destroyed in 5mins. Please use only for testing)</span>
             </p>
